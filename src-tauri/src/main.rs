@@ -17,6 +17,12 @@ fn main() {
       description: "create_spends_table",
       sql: include_str!("migration/create_spends.sql"),
       kind: tauri_plugin_sql::MigrationKind::Up,
+    },
+    Migration {
+      version: 2,
+      description: "create_categories_table",
+      sql: include_str!("migration/create_categories.sql"),
+      kind: tauri_plugin_sql::MigrationKind::Up,
     }
   ];
 
