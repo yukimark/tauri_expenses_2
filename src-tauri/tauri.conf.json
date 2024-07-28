@@ -1,7 +1,7 @@
 {
   "productName": "tauri_expenses_2",
   "version": "0.0.0",
-  "identifier": "tauri.expenses.2",
+  "identifier": "tauri.expenses2",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
