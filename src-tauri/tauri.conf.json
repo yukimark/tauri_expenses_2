@@ -1,7 +1,7 @@
 {
   "productName": "tauri_expenses_2",
   "version": "0.0.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "tauri.expenses.2",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -11,9 +11,11 @@
   "app": {
     "windows": [
       {
+        "fullscreen": false,
+        "resizable": false,
         "title": "tauri_expenses_2",
-        "width": 800,
-        "height": 600
+        "width": 1000,
+        "height": 700
       }
     ],
     "security": {
