@@ -19,6 +19,8 @@
   "devDependencies": {
     "@tauri-apps/cli": ">=2.0.0-beta.0",
     "@vitejs/plugin-vue": "^5.0.5",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
     "normalize.css": "^8.0.1",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
