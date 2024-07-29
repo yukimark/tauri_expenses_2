@@ -1,10 +1,24 @@
 <script setup lang="ts">
+import 'normalize.css';
+import { onMounted } from "vue";
+import Database from '@tauri-apps/plugin-sql';
+import Drawer from "./parts/drawer.vue";
+
+onMounted(async () => {
+  try {
+    await Database.load('sqlite:expense.db');
+    console.log('db connect success');
+  } catch (error) {
+    console.error('db connect error');
+  }
+})
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import Greet from "./components/Greet.vue";
 </script>
 
 <template>
+  <!-- <Drawer /> -->
   <div class="container">
     <h1>Welcome to Tauri!</h1>
 
