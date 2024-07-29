@@ -18,8 +18,9 @@ import Greet from "./components/Greet.vue";
 </script>
 
 <template>
-  <!-- <Drawer /> -->
+  
   <div class="container">
+    <Drawer />
     <h1>Welcome to Tauri!</h1>
 
     <div class="row">
@@ -68,6 +69,7 @@ import Greet from "./components/Greet.vue";
 .container {
   margin: 0;
   padding-top: 10vh;
+  width: 1000px;
   display: flex;
   flex-direction: column;
   justify-content: center;
