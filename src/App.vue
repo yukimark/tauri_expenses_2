@@ -2,6 +2,9 @@
   import 'normalize.css';
   import { onMounted, ref } from "vue";
   import Drawer from "./components/drawer.vue";
+  import { useDatabaseStore } from './stores/databaseStore';
+
+  const databaseStore = useDatabaseStore();
 
   onMounted(async () => {
     databaseStore.loadDatabase();
