@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-import { RouterLink } from "vue-router";
+  import { RouterLink } from "vue-router";
 
   const drawerFlag = ref<boolean>(false);
   const emit = defineEmits(['drawer-status']);
@@ -19,7 +19,7 @@ import { RouterLink } from "vue-router";
     </button>
   </div>
   <div class="drawer-menu" v-if="drawerFlag">
-    <div @click="toggleDrawerMenu">
+    <div class="drawer-menu-first" @click="toggleDrawerMenu">
       <RouterLink to="/">ホーム</RouterLink>
     </div>
     <div @click="toggleDrawerMenu">
@@ -63,5 +63,20 @@ import { RouterLink } from "vue-router";
     z-index: 10;
     pointer-events: auto;
     padding-top: 60px;
+  }
+
+  .drawer-menu div {
+    height: 60px;
+    line-height: 60px;
+  }
+
+  .drawer-menu div a {
+    font-size: 22px;
+    font-weight: bold;
+    color: rgb(48, 48, 48);
+  }
+
+  .drawer-menu div a:hover {
+    color: rgb(241, 11, 11);
   }
 </style>

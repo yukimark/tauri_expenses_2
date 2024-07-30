@@ -1,17 +1,14 @@
 <script setup lang="ts">
   import 'normalize.css';
   import { onMounted, ref } from "vue";
-  import Database from '@tauri-apps/plugin-sql';
   import Drawer from "./components/drawer.vue";
+  import { useDatabaseStore } from './stores/databaseStore';
+
+  const databaseStore = useDatabaseStore();
 
   onMounted(async () => {
-    try {
-      await Database.load('sqlite:expense.db');
-      console.log('db connect success');
-    } catch (error) {
-      console.error('db connect error');
-    }
-  })
+    databaseStore.loadDatabase();
+  });
 
   const drawerState = ref<boolean>(false);
   const drawerStatus = (isOpen: boolean) => {
@@ -59,7 +56,6 @@
     /* padding-top: 2vh; */
     width: 1000px;
     height: inherit;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
@@ -78,11 +74,12 @@
   }
 
   a:hover {
-    color: #535bf2;
+    color: #da0202;
   }
 
   h1 {
     text-align: center;
+    margin: 0;
   }
 
   input {
@@ -114,6 +111,10 @@
   input,
   button {
     outline: none;
+  }
+
+  p {
+    margin: 0;
   }
 
   @media (prefers-color-scheme: dark) {
