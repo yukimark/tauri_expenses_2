@@ -64,4 +64,19 @@ import { RouterLink } from "vue-router";
     pointer-events: auto;
     padding-top: 60px;
   }
+
+  .drawer-menu div {
+    height: 60px;
+    line-height: 60px;
+  }
+
+  .drawer-menu div a {
+    font-size: 22px;
+    font-weight: bold;
+    color: rgb(48, 48, 48);
+  }
+
+  .drawer-menu div a:hover {
+    color: rgb(241, 11, 11);
+  }
 </style>

@@ -71,11 +71,12 @@
   }
 
   a:hover {
-    color: #535bf2;
+    color: #da0202;
   }
 
   h1 {
     text-align: center;
+    margin: 0;
   }
 
   input {
@@ -107,6 +108,10 @@
   input,
   button {
     outline: none;
+  }
+
+  p {
+    margin: 0;
   }
 
   @media (prefers-color-scheme: dark) {
