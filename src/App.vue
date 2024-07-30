@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import 'normalize.css';
   import { onMounted, ref } from "vue";
-  import Database from '@tauri-apps/plugin-sql';
   import Drawer from "./components/drawer.vue";
 
   onMounted(async () => {
@@ -59,7 +58,6 @@
     /* padding-top: 2vh; */
     width: 1000px;
     height: inherit;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
