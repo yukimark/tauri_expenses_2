@@ -4,13 +4,8 @@
   import Drawer from "./components/drawer.vue";
 
   onMounted(async () => {
-    try {
-      await Database.load('sqlite:expense.db');
-      console.log('db connect success');
-    } catch (error) {
-      console.error('db connect error');
-    }
-  })
+    databaseStore.loadDatabase();
+  });
 
   const drawerState = ref<boolean>(false);
   const drawerStatus = (isOpen: boolean) => {
