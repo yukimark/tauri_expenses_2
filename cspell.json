@@ -1,0 +1,8 @@
+{
+  "ignoreWords": [
+    "tauri",
+    "fontawesome",
+    "vite",
+    "Avenir"
+  ]
+}
