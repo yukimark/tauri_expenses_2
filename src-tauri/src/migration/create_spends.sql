@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE spends (
   id           INTEGER PRIMARY KEY,
   date         TEXT NOT NULL,
   category_id  INTEGER NOT NULL,
