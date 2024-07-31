@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { useDatabaseStore } from '../stores/databaseStore';
-  import { Category, Categories, Spend } from '../types.ts';
+  import { Category, Categories, Spend, ModalParams } from '../types.ts';
+  import Modal from '../components/modal.vue';
 
   function formatDateToYYYYMMDD(date: Date): string {
     const year = date.getFullYear();
@@ -25,7 +26,13 @@
     memo: ''
   });
 
+  const modalParams = ref<ModalParams>({
+    status: false,
+    class: '',
+    message: ''
+  });
   
+
   onMounted(async () => {
     try {
       const result: Categories<Category> = await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;');
@@ -53,10 +60,25 @@
         deferred_pay: false,
         memo: ''
       }
+      modalParams.value = {
+        status: true,
+        class: 'success',
+        message: 'お小遣い帳の保存に成功しました。'
+      }
     } catch (error) {
       console.error(error);
+      modalParams.value = {
+        status: true,
+        class: 'error',
+        message: 'お小遣い帳の保存に失敗しました。'
+      }
     }
   }
+
+  const modalClose = (isOpen: boolean) => {
+    modalParams.value.status = isOpen;
+  }
+    
 </script>
 
 <template>
@@ -110,6 +132,8 @@
       </div>
     </div>
   </form>
+
+  <Modal v-bind="modalParams" @modal-status="modalClose"/>
 </template>
 
 <style scoped>
@@ -164,6 +188,10 @@
   }
 
   .spend-form-row2 label {
+    margin-left: 10px;
+  }
+
+  #input-memo {
     margin-left: 10px;
   }
 </style>

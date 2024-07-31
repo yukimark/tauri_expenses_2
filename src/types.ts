@@ -13,3 +13,9 @@ export type Spend = {
   deferred_pay: boolean;
   memo: string;
 }
+
+export type ModalParams = {
+  status: boolean;
+  class: string;
+  message: string;
+}
