@@ -13,7 +13,6 @@
 
 <template>
   <div class="drawer-open-button">
-    <!-- メニュー3本線 -->
     <button @click="toggleDrawerMenu">
       <i class="fa-solid fa-bars fa-2xl"></i>
     </button>

@@ -22,11 +22,11 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.execute(query, params);
   };
 
-  const selectQuery = async (query: string) => {
+  const selectQuery = async (query: string, params?: any[]) => {
     if (!db.value) {
       throw new Error('Database is not connected');
     }
-    return db.value.select(query);
+    return db.value.select(query, params);
   }
 
 

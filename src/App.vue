@@ -53,7 +53,6 @@
 
   .container {
     margin: 0;
-    /* padding-top: 2vh; */
     width: 1000px;
     height: inherit;
     flex-direction: column;
