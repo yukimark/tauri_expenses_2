@@ -78,7 +78,7 @@
   const modalClose = (isOpen: boolean) => {
     modalParams.value.status = isOpen;
   }
-    
+
 </script>
 
 <template>

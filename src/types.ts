@@ -3,8 +3,6 @@ export type GetCategory = {
   category: string;
 }
 
-export type Categories<T> = T[];
-
 export type CreateSpend = {
   date: string;
   category_id: number | null;
