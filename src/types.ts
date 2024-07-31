@@ -12,6 +12,15 @@ export type CreateSpend = {
   memo: string;
 }
 
+export type GetSpend = {
+  date: string;
+  category: string;
+  price: number;
+  fixed_cost: boolean,
+  deferred_pay: boolean,
+  memo: string
+}
+
 export type ModalParams = {
   status: boolean;
   class: string;

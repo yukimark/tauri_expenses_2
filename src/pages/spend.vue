@@ -1,8 +1,10 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { useDatabaseStore } from '../stores/databaseStore';
-  import { GetCategory, Categories, CreateSpend, ModalParams } from '../types.ts';
+  import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts';
   import Modal from '../components/modal.vue';
+
+  const databaseStore = useDatabaseStore();
 
   function formatDateToYYYYMMDD(date: Date): string {
     const year = date.getFullYear();
@@ -12,11 +14,19 @@
     return `${year}-${month}-${day}`;
   }
 
+  function formatDateToYYYYMM(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+
+    return `${year}-${month}`;
+  }
+
   const today: Date = new Date();
   const formattedDate: string = formatDateToYYYYMMDD(today);
+  const yearMonth: string = formatDateToYYYYMM(today);
 
-  const databaseStore = useDatabaseStore();
   const categoryAll = ref<GetCategory[]>([]);
+  const spendAll = ref<GetSpend[]>([]);
   const formData = ref<CreateSpend>({
     date: formattedDate,
     category_id: null,
@@ -35,9 +45,14 @@
 
   onMounted(async () => {
     try {
-      const result: Categories<GetCategory> = await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;');
-      categoryAll.value = result;
-      console.log(categoryAll.value);
+      categoryAll.value = await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;');
+      spendAll.value = await databaseStore.selectQuery(`
+        SELECT spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
+        FROM spends
+        LEFT JOIN categories ON spends.category_id = categories.id
+        WHERE spends.date LIKE ?;
+      `, [`${yearMonth}%`]);
+      console.log(spendAll.value);
       console.log(formData.value.category_id);
     } catch (error) {
       console.error('Query error', error);
