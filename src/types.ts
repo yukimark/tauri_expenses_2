@@ -6,9 +6,9 @@ export type Category = {
 export type Categories<T> = T[];
 
 export type Spend = {
-  date: Date;
-  category_id: number;
-  price: number;
+  date: string;
+  category_id: number | null;
+  price: number | null;
   fixed_cost: boolean;
   deferred_pay: boolean;
   memo: string;
