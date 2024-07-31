@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { useDatabaseStore } from '../stores/databaseStore';
-  import { Category, Categories, Spend, ModalParams } from '../types.ts';
+  import { GetCategory, Categories, CreateSpend, ModalParams } from '../types.ts';
   import Modal from '../components/modal.vue';
 
   function formatDateToYYYYMMDD(date: Date): string {
@@ -16,8 +16,8 @@
   const formattedDate: string = formatDateToYYYYMMDD(today);
 
   const databaseStore = useDatabaseStore();
-  const categoryAll = ref<Category[]>([]);
-  const formData = ref<Spend>({
+  const categoryAll = ref<GetCategory[]>([]);
+  const formData = ref<CreateSpend>({
     date: formattedDate,
     category_id: null,
     price: null,
@@ -35,7 +35,7 @@
 
   onMounted(async () => {
     try {
-      const result: Categories<Category> = await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;');
+      const result: Categories<GetCategory> = await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;');
       categoryAll.value = result;
       console.log(categoryAll.value);
       console.log(formData.value.category_id);

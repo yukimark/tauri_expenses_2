@@ -1,11 +1,11 @@
-export type Category = {
+export type GetCategory = {
   id: number;
   category: string;
 }
 
 export type Categories<T> = T[];
 
-export type Spend = {
+export type CreateSpend = {
   date: string;
   category_id: number | null;
   price: number | null;
