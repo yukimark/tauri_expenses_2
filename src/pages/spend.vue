@@ -40,8 +40,7 @@
   const submitForm = async () => {
     const value = formData.value;
     try {
-      const response =
-        await databaseStore.executeQuery(
+      await databaseStore.executeQuery(
           'INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)',
           [value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo]
         );
