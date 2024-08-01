@@ -1,16 +1,49 @@
-# Tauri + Vue + TypeScript
+## 概要
+Tauriというデスクトップアプリケーションのフレームワークを使ったお小遣い帳アプリです。自分が使うために作っています。制作中です。
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+[Tauri 2.0](https://v2.tauri.app/)
 
-## Recommended IDE Setup
+## 導入
+### ローカルで動かしたい場合
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+TauriとNode.jsの環境構築が必要になります。
 
-## Type Support For `.vue` Imports in TS
+すべてが終わったあとはリポジトリをクローンして
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+(npmの場合)
+```
+npm install
+npm run tauri dev
+```
+これで動かせると思います。未確認。
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+### アプリが欲しい場合
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+このリポジトリのReleasesからそれぞれのOSに合わせたものをダウンロードしてください。
+
+動作の確認はWindowsのみ行っています。
+
+## 機能
+
+現在、実装している機能です。
+
+- お小遣い帳の記録。
+- 今月入力したものを表で確認できる。
+
+今後、入れたい機能は、
+
+- 先月分の表の出力。
+- 誤入力したものを削除できる。
+- top画面に今月分のグラフや目標値との比較、項目ごとの集計。
+- 設定画面に項目の追加や削除、目標値の設定、DBファイルの入出力。
+
+## 使用技術
+- Tauri 2.0 beta
+- Rust
+- Vue 3
+- SQLite3(tauri-plugin-sql使用)
+
+ローカルで動くものなのでサーバーなどはないです。
+
+## DB
+![db](public/tauri_expenses2.svg)
