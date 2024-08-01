@@ -73,6 +73,9 @@
     font-size: 22px;
     font-weight: bold;
     color: rgb(48, 48, 48);
+    width: inherit;
+    height: inherit;
+    display: block;
   }
 
   .drawer-menu div a:hover {
