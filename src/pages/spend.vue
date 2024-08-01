@@ -132,7 +132,7 @@
       <div class="input-category-id spend-form-contents">
         <label for="input-category">項目</label>
         <select id="input-category" v-model="formData.category_id" required>
-          <option v-for="category in categoryAll" :value="category.id">
+          <option v-for="category in categoryAll" :value="category.id" :key="category.id">
             {{ category.category }}
           </option>
         </select>
