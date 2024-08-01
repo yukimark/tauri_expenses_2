@@ -3,6 +3,7 @@
   import { useDatabaseStore } from '../stores/databaseStore';
   import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts';
   import Modal from '../components/modal.vue';
+  import type { Header, Item } from 'vue3-easy-data-table';
 
   const databaseStore = useDatabaseStore();
 
@@ -27,6 +28,17 @@
 
   const categoryAll = ref<GetCategory[]>([]);
   const spendAll = ref<GetSpend[]>([]);
+
+  const headers = ref<Header[]>([
+    { text: '日付', value: 'date'},
+    { text: '項目', value: 'category'},
+    { text: '金額', value: 'price'},
+    { text: '固定費', value: 'fixed_cost'},
+    { text: '後払い', value: 'deferred_pay'},
+    { text: 'メモ', value: 'memo'}
+  ]);
+  const items = ref<Item[]>([]);
+
   const formData = ref<CreateSpend>({
     date: formattedDate,
     category_id: null,
@@ -50,8 +62,10 @@
         SELECT spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
         FROM spends
         LEFT JOIN categories ON spends.category_id = categories.id
-        WHERE spends.date LIKE ?;
+        WHERE spends.date LIKE ?
+        order by spends.created_at desc;
       `, [`${yearMonth}%`]);
+      items.value = spendAll.value;
       console.log(spendAll.value);
       console.log(formData.value.category_id);
     } catch (error) {
@@ -93,7 +107,6 @@
   const modalClose = (isOpen: boolean) => {
     modalParams.value.status = isOpen;
   }
-
 </script>
 
 <template>
@@ -148,6 +161,12 @@
     </div>
   </form>
 
+  <div>
+    <EasyDataTable
+      :headers="headers"
+      :items="items"
+    />
+  </div>
   <Modal v-bind="modalParams" @modal-status="modalClose"/>
 </template>
 
