@@ -12,6 +12,8 @@
     "format": "prettier --write src/**/*.vue"
   },
   "dependencies": {
+    "@eslint/config-array": "^0.17.1",
+    "@eslint/object-schema": "^2.1.4",
     "@tauri-apps/api": ">=2.0.0-beta.0",
     "@tauri-apps/plugin-shell": ">=2.0.0-beta.0",
     "@tauri-apps/plugin-sql": "2.0.0-beta.7",
@@ -28,7 +30,7 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
-    "eslint": "^9.8.0",
+    "eslint": "~7",
     "eslint-plugin-vue": "^9.27.0",
     "globals": "^15.9.0",
     "normalize.css": "^8.0.1",
