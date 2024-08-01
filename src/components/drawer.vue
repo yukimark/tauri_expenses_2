@@ -17,7 +17,7 @@ function toggleDrawerMenu() {
       <i class="fa-solid fa-bars fa-2xl"></i>
     </button>
   </div>
-  <div class="drawer-menu" v-if="drawerFlag">
+  <div v-if="drawerFlag" class="drawer-menu">
     <div class="drawer-menu-first" @click="toggleDrawerMenu">
       <RouterLink to="/">ホーム</RouterLink>
     </div>
