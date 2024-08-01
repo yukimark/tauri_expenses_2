@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <h1>Welcome to Tauri!(デフォルトの画面そのまま置いてる)</h1>
@@ -21,27 +19,27 @@
 </template>
 
 <style scoped>
-  .logo.vite:hover {
-    filter: drop-shadow(0 0 2em #747bff);
-  }
+.logo.vite:hover {
+  filter: drop-shadow(0 0 2em #747bff);
+}
 
-  .logo.vue:hover {
-    filter: drop-shadow(0 0 2em #249b73);
-  }
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #249b73);
+}
 
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: 0.75s;
-  }
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: 0.75s;
+}
 
-  .logo.tauri:hover {
-    filter: drop-shadow(0 0 2em #24c8db);
-  }
+.logo.tauri:hover {
+  filter: drop-shadow(0 0 2em #24c8db);
+}
 
-  .row {
-    display: flex;
-    justify-content: center;
-  }
+.row {
+  display: flex;
+  justify-content: center;
+}
 </style>
