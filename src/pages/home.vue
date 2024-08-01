@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h1>Welcome to Tauri!</h1>
+  <h1>Welcome to Tauri!(デフォルトの画面そのまま置いてる)</h1>
 
   <div class="row">
     <a href="https://vitejs.dev" target="_blank">
