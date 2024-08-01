@@ -56,8 +56,11 @@ const modalParams = ref<ModalParams>({
 
 onMounted(async () => {
   try {
-    categoryAll.value = await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;')
-    spendAll.value = await databaseStore.selectQuery(
+    categoryAll.value = (await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;')) as {
+      id: number
+      category: string
+    }[]
+    spendAll.value = (await databaseStore.selectQuery(
       `
         SELECT spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
         FROM spends
@@ -66,7 +69,7 @@ onMounted(async () => {
         order by spends.created_at desc;
       `,
       [`${yearMonth}%`],
-    )
+    )) as { date: string; category: string; price: number; fixed_cost: boolean; deferred_pay: boolean; memo: string }[]
     items.value = spendAll.value
     console.log(spendAll.value)
     console.log(formData.value.category_id)
