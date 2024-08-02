@@ -13,6 +13,7 @@ export type CreateSpend = {
 }
 
 export type GetSpend = {
+  id: number
   date: string
   category: string
   price: number

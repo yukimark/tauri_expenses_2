@@ -22,6 +22,7 @@ const headers = ref<Header[]>([
   { text: '固定費', value: 'fixed_cost' },
   { text: '後払い', value: 'deferred_pay' },
   { text: 'メモ', value: 'memo' },
+  { text: '削除', value: 'delete', width: 60},
 ])
 const items = ref<Item[]>([])
 
@@ -47,6 +48,7 @@ onMounted(async () => {
       category: string
     }[]
     spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+      id: number
       date: string
       category: string
       price: number
@@ -88,6 +90,7 @@ const submitForm = async () => {
     memo: '',
   }
   spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+    id: number
     date: string
     category: string
     price: number
@@ -100,6 +103,20 @@ const submitForm = async () => {
 
 const modalClose = (isOpen: boolean) => {
   modalParams.value.status = isOpen
+}
+
+const deleteItem = async (item: Item) => {
+  await databaseStore.deleteSpendMatchId([item.id])
+  spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+    id: number
+    date: string
+    category: string
+    price: number
+    fixed_cost: boolean
+    deferred_pay: boolean
+    memo: string
+  }[]
+  items.value = spendAll.value
 }
 </script>
 
@@ -155,8 +172,12 @@ const modalClose = (isOpen: boolean) => {
     </div>
   </form>
 
-  <div>
-    <EasyDataTable :headers="headers" :items="items" />
+  <div class="table">
+    <EasyDataTable :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" multi-sort>
+      <template #item-delete="item">
+        <button @click="deleteItem(item)"><i class="fa-solid fa-trash"></i></button>
+      </template>
+    </EasyDataTable>
   </div>
   <Modal v-bind="modalParams" @modal-status="modalClose" />
 </template>
