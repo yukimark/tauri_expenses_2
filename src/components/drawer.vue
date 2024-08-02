@@ -35,7 +35,7 @@ function toggleDrawerMenu() {
   width: 45px;
   height: 45px;
   line-height: 45px;
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 10px;
   z-index: 20;
