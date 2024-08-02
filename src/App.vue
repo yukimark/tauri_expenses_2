@@ -62,7 +62,6 @@ html {
 }
 
 .draweropen {
-  background-color: rgb(85, 85, 85);
   pointer-events: none;
 }
 
