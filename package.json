@@ -8,8 +8,8 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "lint-dry": "eslint src/**/*.vue",
-    "format": "prettier --write src/**/*.vue"
+    "lint-dry": "eslint 'src/**/*.{js,ts,vue}'",
+    "format": "prettier --write 'src/**/*.{js,ts,vue}'"
   },
   "dependencies": {
     "@eslint/config-array": "^0.17.1",
