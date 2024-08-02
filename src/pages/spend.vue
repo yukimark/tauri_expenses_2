@@ -23,7 +23,7 @@ function formatDateToYYYYMM(date: Date): string {
 }
 
 const today: Date = new Date()
-const formattedDate: string = formatDateToYYYYMMDD(today)
+const yearMonthDay: string = formatDateToYYYYMMDD(today)
 const yearMonth: string = formatDateToYYYYMM(today)
 
 const categoryAll = ref<GetCategory[]>([])
@@ -40,7 +40,7 @@ const headers = ref<Header[]>([
 const items = ref<Item[]>([])
 
 const formData = ref<CreateSpend>({
-  date: formattedDate,
+  date: yearMonthDay,
   category_id: null,
   price: null,
   fixed_cost: false,
@@ -94,7 +94,7 @@ const submitForm = async () => {
     }
   }
   formData.value = {
-    date: formattedDate,
+    date: yearMonthDay,
     category_id: null,
     price: null,
     fixed_cost: false,
