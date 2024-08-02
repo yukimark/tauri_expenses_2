@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
 import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
-import type { Header, Item } from 'vue3-easy-data-table'
+import type { Header, Item, SortType } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
@@ -16,15 +16,17 @@ const categoryAll = ref<GetCategory[]>([])
 const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
-  { text: '日付', value: 'date' },
+  { text: '日付', value: 'date', sortable: true },
   { text: '項目', value: 'category' },
-  { text: '金額', value: 'price' },
+  { text: '金額', value: 'price', sortable: true },
   { text: '固定費', value: 'fixed_cost' },
   { text: '後払い', value: 'deferred_pay' },
   { text: 'メモ', value: 'memo' },
-  { text: '削除', value: 'delete', width: 60},
+  { text: '削除', value: 'delete', width: 60 },
 ])
 const items = ref<Item[]>([])
+const sortBy: string[] = ['date', 'price']
+const sortType: SortType[] = ['desc', 'desc']
 
 const formData = ref<CreateSpend>({
   date: yearMonthDay,
@@ -239,5 +241,9 @@ input {
 
 #input-memo {
   margin-left: 10px;
+}
+
+.table {
+  margin: 10px 20px 0px;
 }
 </style>
