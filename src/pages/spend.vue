@@ -9,7 +9,7 @@ const databaseStore = useDatabaseStore()
 
 function formatDateToYYYYMMDD(date: Date): string {
   const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0') // 月は0始まりなので+1
+  const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
 
   return `${year}-${month}-${day}`
@@ -60,19 +60,9 @@ onMounted(async () => {
       id: number
       category: string
     }[]
-    spendAll.value = (await databaseStore.selectQuery(
-      `
-        SELECT spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
-        FROM spends
-        LEFT JOIN categories ON spends.category_id = categories.id
-        WHERE spends.date LIKE ?
-        order by spends.created_at desc;
-      `,
-      [`${yearMonth}%`],
-    )) as { date: string; category: string; price: number; fixed_cost: boolean; deferred_pay: boolean; memo: string }[]
+    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as { date: string; category: string; price: number; fixed_cost: boolean; deferred_pay: boolean; memo: string }[]
     items.value = spendAll.value
     console.log(spendAll.value)
-    console.log(formData.value.category_id)
   } catch (error) {
     console.error('Query error', error)
   }
@@ -99,6 +89,8 @@ const submitForm = async () => {
       class: 'success',
       message: 'お小遣い帳の保存に成功しました。',
     }
+    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as { date: string; category: string; price: number; fixed_cost: boolean; deferred_pay: boolean; memo: string }[]
+    items.value = spendAll.value
   } catch (error) {
     console.error(error)
     modalParams.value = {
