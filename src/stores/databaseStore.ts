@@ -49,10 +49,7 @@ export const useDatabaseStore = defineStore('database', () => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
-    db.value.execute(
-      'INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)',
-      params,
-    )
+    db.value.execute('INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)', params)
   }
 
   const getCategoryAll = async () => {
