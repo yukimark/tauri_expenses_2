@@ -4,26 +4,12 @@ import { useDatabaseStore } from '../stores/databaseStore'
 import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
 import type { Header, Item } from 'vue3-easy-data-table'
+import { formatDateToYYYYMMDD, formatDateToYYYYMM } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
 
-function formatDateToYYYYMMDD(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0') // 月は0始まりなので+1
-  const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}-${month}-${day}`
-}
-
-function formatDateToYYYYMM(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-
-  return `${year}-${month}`
-}
-
 const today: Date = new Date()
-const formattedDate: string = formatDateToYYYYMMDD(today)
+const yearMonthDay: string = formatDateToYYYYMMDD(today)
 const yearMonth: string = formatDateToYYYYMM(today)
 
 const categoryAll = ref<GetCategory[]>([])
@@ -40,7 +26,7 @@ const headers = ref<Header[]>([
 const items = ref<Item[]>([])
 
 const formData = ref<CreateSpend>({
-  date: formattedDate,
+  date: yearMonthDay,
   category_id: null,
   price: null,
   fixed_cost: false,
@@ -56,23 +42,20 @@ const modalParams = ref<ModalParams>({
 
 onMounted(async () => {
   try {
-    categoryAll.value = (await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;')) as {
+    categoryAll.value = (await databaseStore.getCategoryAll()) as {
       id: number
       category: string
     }[]
-    spendAll.value = (await databaseStore.selectQuery(
-      `
-        SELECT spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
-        FROM spends
-        LEFT JOIN categories ON spends.category_id = categories.id
-        WHERE spends.date LIKE ?
-        order by spends.created_at desc;
-      `,
-      [`${yearMonth}%`],
-    )) as { date: string; category: string; price: number; fixed_cost: boolean; deferred_pay: boolean; memo: string }[]
+    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+      date: string
+      category: string
+      price: number
+      fixed_cost: boolean
+      deferred_pay: boolean
+      memo: string
+    }[]
     items.value = spendAll.value
     console.log(spendAll.value)
-    console.log(formData.value.category_id)
   } catch (error) {
     console.error('Query error', error)
   }
@@ -81,19 +64,8 @@ onMounted(async () => {
 const submitForm = async () => {
   const value = formData.value
   try {
-    await databaseStore.executeQuery(
-      'INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)',
-      [value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo],
-    )
+    await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
     console.log('spend save success')
-    formData.value = {
-      date: formattedDate,
-      category_id: null,
-      price: null,
-      fixed_cost: false,
-      deferred_pay: false,
-      memo: '',
-    }
     modalParams.value = {
       status: true,
       class: 'success',
@@ -107,6 +79,23 @@ const submitForm = async () => {
       message: 'お小遣い帳の保存に失敗しました。',
     }
   }
+  formData.value = {
+    date: yearMonthDay,
+    category_id: null,
+    price: null,
+    fixed_cost: false,
+    deferred_pay: false,
+    memo: '',
+  }
+  spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+    date: string
+    category: string
+    price: number
+    fixed_cost: boolean
+    deferred_pay: boolean
+    memo: string
+  }[]
+  items.value = spendAll.value
 }
 
 const modalClose = (isOpen: boolean) => {
