@@ -4,23 +4,9 @@ import { useDatabaseStore } from '../stores/databaseStore'
 import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
 import type { Header, Item } from 'vue3-easy-data-table'
+import { formatDateToYYYYMMDD, formatDateToYYYYMM } from '../helper/convertDate.ts'
 
 const databaseStore = useDatabaseStore()
-
-function formatDateToYYYYMMDD(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}-${month}-${day}`
-}
-
-function formatDateToYYYYMM(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-
-  return `${year}-${month}`
-}
 
 const today: Date = new Date()
 const yearMonthDay: string = formatDateToYYYYMMDD(today)
