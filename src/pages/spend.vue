@@ -60,7 +60,14 @@ onMounted(async () => {
       id: number
       category: string
     }[]
-    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as { date: string; category: string; price: number; fixed_cost: boolean; deferred_pay: boolean; memo: string }[]
+    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+      date: string
+      category: string
+      price: number
+      fixed_cost: boolean
+      deferred_pay: boolean
+      memo: string
+    }[]
     items.value = spendAll.value
     console.log(spendAll.value)
   } catch (error) {
@@ -89,7 +96,14 @@ const submitForm = async () => {
       class: 'success',
       message: 'お小遣い帳の保存に成功しました。',
     }
-    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as { date: string; category: string; price: number; fixed_cost: boolean; deferred_pay: boolean; memo: string }[]
+    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+      date: string
+      category: string
+      price: number
+      fixed_cost: boolean
+      deferred_pay: boolean
+      memo: string
+    }[]
     items.value = spendAll.value
   } catch (error) {
     console.error(error)
