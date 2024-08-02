@@ -80,28 +80,11 @@ const submitForm = async () => {
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
     console.log('spend save success')
-    formData.value = {
-      date: formattedDate,
-      category_id: null,
-      price: null,
-      fixed_cost: false,
-      deferred_pay: false,
-      memo: '',
-    }
     modalParams.value = {
       status: true,
       class: 'success',
       message: 'お小遣い帳の保存に成功しました。',
     }
-    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
-      date: string
-      category: string
-      price: number
-      fixed_cost: boolean
-      deferred_pay: boolean
-      memo: string
-    }[]
-    items.value = spendAll.value
   } catch (error) {
     console.error(error)
     modalParams.value = {
@@ -110,6 +93,23 @@ const submitForm = async () => {
       message: 'お小遣い帳の保存に失敗しました。',
     }
   }
+  formData.value = {
+    date: formattedDate,
+    category_id: null,
+    price: null,
+    fixed_cost: false,
+    deferred_pay: false,
+    memo: '',
+  }
+  spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+    date: string
+    category: string
+    price: number
+    fixed_cost: boolean
+    deferred_pay: boolean
+    memo: string
+  }[]
+  items.value = spendAll.value
 }
 
 const modalClose = (isOpen: boolean) => {
