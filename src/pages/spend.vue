@@ -56,7 +56,7 @@ const modalParams = ref<ModalParams>({
 
 onMounted(async () => {
   try {
-    categoryAll.value = (await databaseStore.selectQuery('SELECT id, category FROM categories order by id asc;')) as {
+    categoryAll.value = (await databaseStore.getCategoryAll()) as {
       id: number
       category: string
     }[]
@@ -78,10 +78,7 @@ onMounted(async () => {
 const submitForm = async () => {
   const value = formData.value
   try {
-    await databaseStore.executeQuery(
-      'INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)',
-      [value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo],
-    )
+    await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
     console.log('spend save success')
     formData.value = {
       date: formattedDate,
