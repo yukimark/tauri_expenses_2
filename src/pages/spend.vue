@@ -4,7 +4,7 @@ import { useDatabaseStore } from '../stores/databaseStore'
 import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
 import type { Header, Item } from 'vue3-easy-data-table'
-import { formatDateToYYYYMMDD, formatDateToYYYYMM } from '../helper/convertDate.ts'
+import { formatDateToYYYYMMDD, formatDateToYYYYMM } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
 
