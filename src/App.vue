@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import 'normalize.css'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import Drawer from './components/drawer.vue'
 import { useDatabaseStore } from './stores/databaseStore'
 
@@ -9,16 +9,11 @@ const databaseStore = useDatabaseStore()
 onMounted(async () => {
   databaseStore.loadDatabase()
 })
-
-const drawerState = ref<boolean>(false)
-const drawerStatus = (isOpen: boolean) => {
-  drawerState.value = isOpen
-}
 </script>
 
 <template>
-  <div class="container" :class="{ draweropen: drawerState.valueOf() }">
-    <Drawer @drawer-status="drawerStatus" />
+  <div class="container">
+    <Drawer />
     <router-view />
   </div>
 </template>
@@ -59,10 +54,6 @@ html {
   justify-content: center;
   text-align: center;
   position: relative;
-}
-
-.draweropen {
-  pointer-events: none;
 }
 
 a {
