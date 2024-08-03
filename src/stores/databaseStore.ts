@@ -52,11 +52,12 @@ export const useDatabaseStore = defineStore('database', () => {
     db.value.execute('INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)', params)
   }
 
-  const deleteSpendMatchId = async (params: any[]) => {
+  const deleteSpendsMatchId = async (params: number[]) => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
-    db.value.execute('DELETE FROM spends WHERE id = ?', params)
+    const idsString = params.join(',')
+    db.value.execute(`DELETE FROM spends WHERE id IN (${idsString});`)
   }
 
   const getCategoryAll = async () => {
@@ -66,5 +67,5 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select('SELECT id, category FROM categories order by id asc;')
   }
 
-  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendMatchId }
+  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendsMatchId }
 })

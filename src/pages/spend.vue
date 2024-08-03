@@ -26,6 +26,7 @@ const headers = ref<Header[]>([
 const items = ref<Item[]>([])
 const sortBy: string[] = ['date', 'price']
 const sortType: SortType[] = ['desc', 'desc']
+const itemsSelected = ref<Item[]>([])
 
 const formData = ref<CreateSpend>({
   date: yearMonthDay,
@@ -106,8 +107,22 @@ const modalClose = (isOpen: boolean) => {
   modalParams.value.status = isOpen
 }
 
-const deleteItem = async (item: Item) => {
-  await databaseStore.deleteSpendMatchId([item.id])
+const deleteItems = async (itemArray: Item[]) => {
+  if (itemArray.length === 0) {
+    modalParams.value = {
+      status: true,
+      class: 'success',
+      message: '削除するときはアイテムにチェックを入れてください。',
+    }
+    return
+  }
+  const ids: number[] = itemArray.map((item) => item.id)
+  await databaseStore.deleteSpendsMatchId(ids)
+  modalParams.value = {
+    status: true,
+    class: 'success',
+    message: '選択したデータを削除しました。',
+  }
   spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
     id: number
     date: string
@@ -173,12 +188,14 @@ const deleteItem = async (item: Item) => {
     </div>
   </form>
 
+  <div class="spend-trash">
+    <button type="button" @click="deleteItems(itemsSelected)">
+      <span>選択した項目を削除</span>
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
   <div class="table">
-    <EasyDataTable :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" multi-sort>
-      <template #item-delete="item">
-        <button @click="deleteItem(item)"><i class="fa-solid fa-trash"></i></button>
-      </template>
-    </EasyDataTable>
+    <EasyDataTable v-model:items-selected="itemsSelected" :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" multi-sort />
   </div>
   <Modal v-bind="modalParams" @modal-status="modalClose" />
 </template>
@@ -240,6 +257,11 @@ input {
 
 #input-memo {
   margin-left: 10px;
+}
+
+.spend-trash {
+  text-align: right;
+  margin: 0px 20px;
 }
 
 .table {
