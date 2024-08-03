@@ -57,7 +57,7 @@ export const useDatabaseStore = defineStore('database', () => {
       throw new Error('Database is not connected')
     }
     const idsString = params.join(',')
-    db.value.execute(`DELETE FROM spends WHERE id IN (${idsString});`)
+    db.value.execute(`BEGIN TRANSACTION; DELETE FROM spends WHERE id IN (${idsString}); COMMIT;`)
   }
 
   const getCategoryAll = async () => {
