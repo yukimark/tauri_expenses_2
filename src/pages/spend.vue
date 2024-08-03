@@ -18,10 +18,10 @@ const spendAll = ref<GetSpend[]>([])
 const headers = ref<Header[]>([
   { text: '日付', value: 'date', sortable: true, width: 110 },
   { text: '項目', value: 'category', width: 130 },
-  { text: '金額', value: 'price', sortable: true, width: 200 },
+  { text: '金額', value: 'price', sortable: true, width: 150 },
   { text: '固定費', value: 'fixed_cost', width: 90 },
   { text: '後払い', value: 'deferred_pay', width: 90 },
-  { text: 'メモ', value: 'memo', width: 500 },
+  { text: 'メモ', value: 'memo', width: 350 },
 ])
 const items = ref<Item[]>([])
 const sortBy: string[] = ['date', 'price']
