@@ -16,13 +16,12 @@ const categoryAll = ref<GetCategory[]>([])
 const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
-  { text: '日付', value: 'date', sortable: true },
-  { text: '項目', value: 'category' },
-  { text: '金額', value: 'price', sortable: true },
-  { text: '固定費', value: 'fixed_cost' },
-  { text: '後払い', value: 'deferred_pay' },
-  { text: 'メモ', value: 'memo' },
-  { text: '削除', value: 'delete', width: 60 },
+  { text: '日付', value: 'date', sortable: true, width: 110 },
+  { text: '項目', value: 'category', width: 130 },
+  { text: '金額', value: 'price', sortable: true, width: 200 },
+  { text: '固定費', value: 'fixed_cost', width: 90 },
+  { text: '後払い', value: 'deferred_pay', width: 90 },
+  { text: 'メモ', value: 'memo', width: 500 },
 ])
 const items = ref<Item[]>([])
 const sortBy: string[] = ['date', 'price']
