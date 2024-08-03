@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
 import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
-import type { Header, Item } from 'vue3-easy-data-table'
+import type { Header, Item, SortType } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
@@ -16,14 +16,17 @@ const categoryAll = ref<GetCategory[]>([])
 const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
-  { text: '日付', value: 'date' },
-  { text: '項目', value: 'category' },
-  { text: '金額', value: 'price' },
-  { text: '固定費', value: 'fixed_cost' },
-  { text: '後払い', value: 'deferred_pay' },
-  { text: 'メモ', value: 'memo' },
+  { text: '日付', value: 'date', sortable: true, width: 110 },
+  { text: '項目', value: 'category', width: 130 },
+  { text: '金額', value: 'price', sortable: true, width: 200 },
+  { text: '固定費', value: 'fixed_cost', width: 90 },
+  { text: '後払い', value: 'deferred_pay', width: 90 },
+  { text: 'メモ', value: 'memo', width: 500 },
 ])
 const items = ref<Item[]>([])
+const sortBy: string[] = ['date', 'price']
+const sortType: SortType[] = ['desc', 'desc']
+const itemsSelected = ref<Item[]>([])
 
 const formData = ref<CreateSpend>({
   date: yearMonthDay,
@@ -47,6 +50,7 @@ onMounted(async () => {
       category: string
     }[]
     spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+      id: number
       date: string
       category: string
       price: number
@@ -88,6 +92,7 @@ const submitForm = async () => {
     memo: '',
   }
   spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+    id: number
     date: string
     category: string
     price: number
@@ -100,6 +105,34 @@ const submitForm = async () => {
 
 const modalClose = (isOpen: boolean) => {
   modalParams.value.status = isOpen
+}
+
+const deleteItems = async (itemArray: Item[]) => {
+  if (itemArray.length === 0) {
+    modalParams.value = {
+      status: true,
+      class: 'success',
+      message: '削除するときはアイテムにチェックを入れてください。',
+    }
+    return
+  }
+  const ids: number[] = itemArray.map((item) => item.id)
+  await databaseStore.deleteSpendsMatchId(ids)
+  modalParams.value = {
+    status: true,
+    class: 'success',
+    message: '選択したデータを削除しました。',
+  }
+  spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
+    id: number
+    date: string
+    category: string
+    price: number
+    fixed_cost: boolean
+    deferred_pay: boolean
+    memo: string
+  }[]
+  items.value = spendAll.value
 }
 </script>
 
@@ -155,8 +188,14 @@ const modalClose = (isOpen: boolean) => {
     </div>
   </form>
 
-  <div>
-    <EasyDataTable :headers="headers" :items="items" />
+  <div class="spend-trash">
+    <button type="button" @click="deleteItems(itemsSelected)">
+      <span>選択した項目を削除</span>
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+  <div class="table">
+    <EasyDataTable v-model:items-selected="itemsSelected" :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" multi-sort />
   </div>
   <Modal v-bind="modalParams" @modal-status="modalClose" />
 </template>
@@ -218,5 +257,14 @@ input {
 
 #input-memo {
   margin-left: 10px;
+}
+
+.spend-trash {
+  text-align: right;
+  margin: 0px 20px;
+}
+
+.table {
+  margin: 10px 20px 0px;
 }
 </style>

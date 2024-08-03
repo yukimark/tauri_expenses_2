@@ -35,7 +35,7 @@ export const useDatabaseStore = defineStore('database', () => {
     }
     return db.value.select(
       `
-        SELECT spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
+        SELECT spends.id, spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
         FROM spends
         LEFT JOIN categories ON spends.category_id = categories.id
         WHERE spends.date LIKE ?
@@ -52,6 +52,14 @@ export const useDatabaseStore = defineStore('database', () => {
     db.value.execute('INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)', params)
   }
 
+  const deleteSpendsMatchId = async (params: number[]) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    const idsString = params.join(',')
+    db.value.execute(`DELETE FROM spends WHERE id IN (${idsString});`)
+  }
+
   const getCategoryAll = async () => {
     if (!db.value) {
       throw new Error('Database is not connected')
@@ -59,5 +67,5 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select('SELECT id, category FROM categories order by id asc;')
   }
 
-  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend }
+  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendsMatchId }
 })
