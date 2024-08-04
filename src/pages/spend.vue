@@ -217,11 +217,6 @@ const spendAllMonthToggle = async () => {
 </template>
 
 <style scoped>
-h1 {
-  font-size: 28px;
-  font-weight: 500;
-}
-
 form {
   margin: 30px;
   border: solid 2px rgb(106, 106, 196);
@@ -229,10 +224,6 @@ form {
 
 input {
   outline: solid 1px gray;
-}
-
-.title {
-  padding-top: 20px;
 }
 
 .spend-form-row1 {

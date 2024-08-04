@@ -69,6 +69,8 @@ a:hover {
 h1 {
   text-align: center;
   margin: 0;
+  font-size: 28px;
+  font-weight: 500;
 }
 
 input {
@@ -104,6 +106,10 @@ button {
 
 p {
   margin: 0;
+}
+
+.title {
+  padding-top: 20px;
 }
 
 @media (prefers-color-scheme: dark) {
