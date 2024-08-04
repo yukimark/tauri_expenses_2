@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
-import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
+import { useCategoryStore } from '../stores/categoryStore.ts'
+import { CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
 import type { Header, Item, SortType, BodyItemClassNameFunction } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
+const categoryStore = useCategoryStore()
 
 const today: Date = new Date()
 const yearMonthDay: string = formatDateToYYYYMMDD(today)
 const thisMonth: string = formatDateToYYYYMM(today)
 const lastMonth: string = formatDateToYYYYMMLastMonth(today)
 
-const categoryAll = ref<GetCategory[]>([])
 const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
@@ -47,15 +48,7 @@ const modalParams = ref<ModalParams>({
 const spendAllMonthClicked = ref<boolean>(false)
 
 const getSpendAllSetItem = async () => {
-  spendAll.value = (await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth)) as {
-    id: number
-    date: string
-    category: string
-    price: number
-    fixed_cost: boolean
-    deferred_pay: boolean
-    memo: string
-  }[]
+  spendAll.value = await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth)
   items.value = priceToLocale(spendAll.value)
 }
 
@@ -82,12 +75,8 @@ const setModalParams = (cssClass: string, message: string) => {
 
 onMounted(async () => {
   try {
-    categoryAll.value = (await databaseStore.getCategoryAll()) as {
-      id: number
-      category: string
-    }[]
     getSpendAllSetItem()
-    console.log(spendAll.value)
+    console.log('spend success')
   } catch (error) {
     console.error('Query error', error)
   }
@@ -158,7 +147,7 @@ const spendAllMonthToggle = async () => {
       <div class="input-category-id spend-form-contents">
         <label for="input-category">項目</label>
         <select id="input-category" v-model="formData.category_id" required>
-          <option v-for="category in categoryAll" :value="category.id" :key="category.id">
+          <option v-for="category in categoryStore.category" :value="category.id" :key="category.id">
             {{ category.category }}
           </option>
         </select>
@@ -217,11 +206,6 @@ const spendAllMonthToggle = async () => {
 </template>
 
 <style scoped>
-h1 {
-  font-size: 28px;
-  font-weight: 500;
-}
-
 form {
   margin: 30px;
   border: solid 2px rgb(106, 106, 196);
@@ -229,10 +213,6 @@ form {
 
 input {
   outline: solid 1px gray;
-}
-
-.title {
-  padding-top: 20px;
 }
 
 .spend-form-row1 {

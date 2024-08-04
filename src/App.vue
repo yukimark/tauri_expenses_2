@@ -3,11 +3,14 @@ import 'normalize.css'
 import { onMounted } from 'vue'
 import Drawer from './components/drawer.vue'
 import { useDatabaseStore } from './stores/databaseStore'
+import { useCategoryStore } from './stores/categoryStore'
 
 const databaseStore = useDatabaseStore()
+const categoryStore = useCategoryStore()
 
 onMounted(async () => {
   databaseStore.loadDatabase()
+  categoryStore.set(await databaseStore.getCategoryAll())
 })
 </script>
 
@@ -69,6 +72,8 @@ a:hover {
 h1 {
   text-align: center;
   margin: 0;
+  font-size: 28px;
+  font-weight: 500;
 }
 
 input {
@@ -104,6 +109,10 @@ button {
 
 p {
   margin: 0;
+}
+
+.title {
+  padding-top: 20px;
 }
 
 @media (prefers-color-scheme: dark) {
