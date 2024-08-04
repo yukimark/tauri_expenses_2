@@ -48,15 +48,7 @@ const modalParams = ref<ModalParams>({
 const spendAllMonthClicked = ref<boolean>(false)
 
 const getSpendAllSetItem = async () => {
-  spendAll.value = (await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth)) as {
-    id: number
-    date: string
-    category: string
-    price: number
-    fixed_cost: boolean
-    deferred_pay: boolean
-    memo: string
-  }[]
+  spendAll.value = (await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth))
   items.value = priceToLocale(spendAll.value)
 }
 
