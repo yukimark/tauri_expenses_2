@@ -82,7 +82,7 @@ function toggleDrawerMenu() {
 }
 
 .drawer-background {
-  background-color: rgb(85, 85, 85, .7);
+  background-color: rgb(85, 85, 85, 0.7);
   z-index: 5;
   position: fixed;
   top: 0;

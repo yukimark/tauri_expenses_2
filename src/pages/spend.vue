@@ -4,13 +4,14 @@ import { useDatabaseStore } from '../stores/databaseStore'
 import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
 import type { Header, Item, SortType, BodyItemClassNameFunction } from 'vue3-easy-data-table'
-import { formatDateToYYYYMMDD, formatDateToYYYYMM } from '../helper/formatDate.ts'
+import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
 
 const today: Date = new Date()
 const yearMonthDay: string = formatDateToYYYYMMDD(today)
-const yearMonth: string = formatDateToYYYYMM(today)
+const thisMonth: string = formatDateToYYYYMM(today)
+const lastMonth: string = formatDateToYYYYMMLastMonth(today)
 
 const categoryAll = ref<GetCategory[]>([])
 const spendAll = ref<GetSpend[]>([])
@@ -43,6 +44,21 @@ const modalParams = ref<ModalParams>({
   message: '',
 })
 
+const spendAllMonthClicked = ref<boolean>(false)
+
+const getSpendAllSetItem = async () => {
+  spendAll.value = (await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth)) as {
+    id: number
+    date: string
+    category: string
+    price: number
+    fixed_cost: boolean
+    deferred_pay: boolean
+    memo: string
+  }[]
+  items.value = priceToLocale(spendAll.value)
+}
+
 const priceToLocale = (spendAll: GetSpend[]) => {
   return spendAll.map((spend) => ({
     ...spend,
@@ -56,22 +72,21 @@ const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string, ro
   return ''
 }
 
+const setModalParams = (cssClass: string, message: string) => {
+  modalParams.value = {
+    status: true,
+    class: cssClass,
+    message: message,
+  }
+}
+
 onMounted(async () => {
   try {
     categoryAll.value = (await databaseStore.getCategoryAll()) as {
       id: number
       category: string
     }[]
-    spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
-      id: number
-      date: string
-      category: string
-      price: number
-      fixed_cost: boolean
-      deferred_pay: boolean
-      memo: string
-    }[]
-    items.value = priceToLocale(spendAll.value)
+    getSpendAllSetItem()
     console.log(spendAll.value)
   } catch (error) {
     console.error('Query error', error)
@@ -83,18 +98,10 @@ const submitForm = async () => {
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
     console.log('spend save success')
-    modalParams.value = {
-      status: true,
-      class: 'success',
-      message: 'お小遣い帳の保存に成功しました。',
-    }
+    setModalParams('success', 'お小遣い帳の保存に成功しました。')
   } catch (error) {
     console.error(error)
-    modalParams.value = {
-      status: true,
-      class: 'error',
-      message: 'お小遣い帳の保存に失敗しました。',
-    }
+    setModalParams('error', 'お小遣い帳の保存に失敗しました。')
   }
   formData.value = {
     date: yearMonthDay,
@@ -104,16 +111,7 @@ const submitForm = async () => {
     deferred_pay: false,
     memo: '',
   }
-  spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
-    id: number
-    date: string
-    category: string
-    price: number
-    fixed_cost: boolean
-    deferred_pay: boolean
-    memo: string
-  }[]
-  items.value = priceToLocale(spendAll.value)
+  getSpendAllSetItem()
 }
 
 const modalClose = (isOpen: boolean) => {
@@ -122,30 +120,18 @@ const modalClose = (isOpen: boolean) => {
 
 const deleteItems = async (itemArray: Item[]) => {
   if (itemArray.length === 0) {
-    modalParams.value = {
-      status: true,
-      class: 'success',
-      message: '削除するときはアイテムにチェックを入れてください。',
-    }
+    setModalParams('success', '削除するときはアイテムにチェックを入れてください。')
     return
   }
   const ids: number[] = itemArray.map((item) => item.id)
   await databaseStore.deleteSpendsMatchId(ids)
-  modalParams.value = {
-    status: true,
-    class: 'success',
-    message: '選択したデータを削除しました。',
-  }
-  spendAll.value = (await databaseStore.getSpendsYearMonth(yearMonth)) as {
-    id: number
-    date: string
-    category: string
-    price: number
-    fixed_cost: boolean
-    deferred_pay: boolean
-    memo: string
-  }[]
-  items.value = priceToLocale(spendAll.value)
+  setModalParams('success', '選択したデータを削除しました。')
+  getSpendAllSetItem()
+}
+
+const spendAllMonthToggle = async () => {
+  spendAllMonthClicked.value = !spendAllMonthClicked.value
+  getSpendAllSetItem()
 }
 </script>
 
@@ -201,11 +187,20 @@ const deleteItems = async (itemArray: Item[]) => {
     </div>
   </form>
 
-  <div class="spend-trash">
-    <button type="button" @click="deleteItems(itemsSelected)">
-      <span>選択した項目を削除</span>
-      <i class="fa-solid fa-trash"></i>
-    </button>
+  <div class="table-contents">
+    <div class="view-spend-toggle">
+      <button v-if="spendAllMonthClicked" @click="spendAllMonthToggle">今月</button>
+      <div v-else>今月</div>
+      <span>|</span>
+      <button v-if="!spendAllMonthClicked" @click="spendAllMonthToggle">先月</button>
+      <div v-else>先月</div>
+    </div>
+    <div class="spend-trash">
+      <button type="button" @click="deleteItems(itemsSelected)">
+        <span>選択した項目を削除</span>
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
   </div>
   <div class="table">
     <EasyDataTable
@@ -278,6 +273,32 @@ input {
 
 #input-memo {
   margin-left: 10px;
+}
+
+.table-contents {
+  display: flex;
+  margin: 0px 20px 0px;
+  justify-content: space-between;
+}
+
+.view-spend-toggle {
+  display: flex;
+  margin-left: 10px;
+}
+
+.view-spend-toggle button {
+  text-decoration: underline;
+  color: rgb(106, 106, 196);
+}
+
+.view-spend-toggle button:hover {
+  color: red;
+  background-color: inherit;
+}
+
+.view-spend-toggle span {
+  margin-left: 5px;
+  margin-right: 8px;
 }
 
 .spend-trash {
