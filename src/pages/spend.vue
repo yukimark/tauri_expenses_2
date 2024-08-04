@@ -48,7 +48,7 @@ const modalParams = ref<ModalParams>({
 const spendAllMonthClicked = ref<boolean>(false)
 
 const getSpendAllSetItem = async () => {
-  spendAll.value = (await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth))
+  spendAll.value = await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth)
   items.value = priceToLocale(spendAll.value)
 }
 
@@ -76,7 +76,7 @@ const setModalParams = (cssClass: string, message: string) => {
 onMounted(async () => {
   try {
     getSpendAllSetItem()
-    console.log(spendAll.value)
+    console.log('spend success')
   } catch (error) {
     console.error('Query error', error)
   }
