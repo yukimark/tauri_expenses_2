@@ -4,15 +4,9 @@
   <h1>Welcome to Tauri!(デフォルトの画面そのまま置いてる)</h1>
 
   <div class="row">
-    <a href="#" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-    </a>
-    <a href="#" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-    </a>
-    <a href="#" target="_blank">
-      <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <img src="/vite.svg" class="logo vite" alt="Vite logo" />
+    <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
+    <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
   </div>
 
   <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
