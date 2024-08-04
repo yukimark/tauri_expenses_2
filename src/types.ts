@@ -1,6 +1,8 @@
 export type GetCategory = {
   id: number
   category: string
+  initial_flag: boolean
+  spend_target_value: number
 }
 
 export type CreateSpend = {

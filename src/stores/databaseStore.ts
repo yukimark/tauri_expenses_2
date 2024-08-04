@@ -64,7 +64,7 @@ export const useDatabaseStore = defineStore('database', () => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
-    return db.value.select('SELECT id, category FROM categories order by id asc;')
+    return db.value.select('SELECT id, category, initial_flag, spend_target_value FROM categories order by id asc;')
   }
 
   return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendsMatchId }

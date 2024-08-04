@@ -3,11 +3,14 @@ import 'normalize.css'
 import { onMounted } from 'vue'
 import Drawer from './components/drawer.vue'
 import { useDatabaseStore } from './stores/databaseStore'
+import { useCategoryStore } from './stores/categoryStore'
 
 const databaseStore = useDatabaseStore()
+const categoryStore = useCategoryStore()
 
 onMounted(async () => {
   databaseStore.loadDatabase()
+  categoryStore.set(await databaseStore.getCategoryAll())
 })
 </script>
 

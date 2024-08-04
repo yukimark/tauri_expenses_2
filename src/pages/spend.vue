@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
-import { GetCategory, CreateSpend, ModalParams, GetSpend } from '../types.ts'
+import { useCategoryStore } from '../stores/categoryStore.ts'
+import { CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
 import type { Header, Item, SortType, BodyItemClassNameFunction } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
+const categoryStore = useCategoryStore()
 
 const today: Date = new Date()
 const yearMonthDay: string = formatDateToYYYYMMDD(today)
 const thisMonth: string = formatDateToYYYYMM(today)
 const lastMonth: string = formatDateToYYYYMMLastMonth(today)
 
-const categoryAll = ref<GetCategory[]>([])
 const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
@@ -82,10 +83,6 @@ const setModalParams = (cssClass: string, message: string) => {
 
 onMounted(async () => {
   try {
-    categoryAll.value = (await databaseStore.getCategoryAll()) as {
-      id: number
-      category: string
-    }[]
     getSpendAllSetItem()
     console.log(spendAll.value)
   } catch (error) {
@@ -158,7 +155,7 @@ const spendAllMonthToggle = async () => {
       <div class="input-category-id spend-form-contents">
         <label for="input-category">項目</label>
         <select id="input-category" v-model="formData.category_id" required>
-          <option v-for="category in categoryAll" :value="category.id" :key="category.id">
+          <option v-for="category in categoryStore.category" :value="category.id" :key="category.id">
             {{ category.category }}
           </option>
         </select>
