@@ -9,7 +9,7 @@ const databaseStore = useDatabaseStore()
 const categoryStore = useCategoryStore()
 
 onMounted(async () => {
-  databaseStore.loadDatabase()
+  await databaseStore.loadDatabase()
   categoryStore.set(await databaseStore.getCategoryAll())
 })
 </script>
