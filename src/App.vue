@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import 'normalize.css'
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import Drawer from './components/drawer.vue'
 import { useDatabaseStore } from './stores/databaseStore'
 import { useCategoryStore } from './stores/categoryStore'
@@ -8,16 +8,19 @@ import { useCategoryStore } from './stores/categoryStore'
 const databaseStore = useDatabaseStore()
 const categoryStore = useCategoryStore()
 
+const isReady = ref<boolean>(false)
+
 onMounted(async () => {
   await databaseStore.loadDatabase()
-  categoryStore.set(await databaseStore.getCategoryAll())
+  await categoryStore.set(await databaseStore.getCategoryAll())
+  isReady.value = true
 })
 </script>
 
 <template>
   <div class="container">
     <Drawer />
-    <router-view />
+    <router-view v-if="isReady" />
   </div>
 </template>
 
