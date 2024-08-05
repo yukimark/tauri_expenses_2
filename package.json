@@ -22,6 +22,7 @@
     "pinia": "^2.2.0",
     "vue": "^3.3.4",
     "vue-router": "^4.4.0",
+    "vue3-charts": "^1.1.33",
     "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
