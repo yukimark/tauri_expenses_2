@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import CoverBackground from '../parts/coverBackground.vue'
 
 const drawerFlag = ref<boolean>(false)
 
@@ -26,7 +27,7 @@ function toggleDrawerMenu() {
       <RouterLink to="/config">設定</RouterLink>
     </div>
   </div>
-  <div v-if="drawerFlag" class="drawer-background" @click="toggleDrawerMenu"></div>
+  <CoverBackground v-if="drawerFlag" @click="toggleDrawerMenu" />
 </template>
 
 <style scoped>
@@ -79,17 +80,5 @@ function toggleDrawerMenu() {
 
 .drawer-menu div a:hover {
   color: rgb(241, 11, 11);
-}
-
-.drawer-background {
-  background-color: rgb(85, 85, 85, 0.7);
-  z-index: 5;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
 }
 </style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ModalParams } from '../types.ts'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import CoverBackground from '../parts/coverBackground.vue';
 
 const props = defineProps<ModalParams>()
 
@@ -13,6 +14,8 @@ function closeModal() {
 const computedClass = computed(() => {
   return props.class ? props.class : ''
 })
+
+const hideDrawer = ref<boolean>(true)
 </script>
 
 <template>
@@ -23,6 +26,7 @@ const computedClass = computed(() => {
       <button @click="closeModal">{{ props.close_button_message ? props.close_button_message : '閉じる' }}</button>
     </div>
   </div>
+  <CoverBackground v-if="props.status" :hideDrawer="hideDrawer" />
 </template>
 
 <style scoped>
