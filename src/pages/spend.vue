@@ -86,6 +86,7 @@ const submitForm = async () => {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
     console.log('spend save success')
     setModalParams('success', 'お小遣い帳の保存に成功しました。')
+    getSpendAllSetItem()
   } catch (error) {
     console.error(error)
     setModalParams('error', 'お小遣い帳の保存に失敗しました。')
@@ -98,7 +99,6 @@ const submitForm = async () => {
     deferred_pay: false,
     memo: '',
   }
-  getSpendAllSetItem()
 }
 
 const modalClose = (isOpen: boolean) => {
