@@ -25,7 +25,7 @@ const headers = ref<Header[]>([
   { text: '項目', value: 'name', width: 130 },
   { text: '金額', value: 'price', width: 150 },
   { text: '目標', value: 'target_value', width: 130 },
-  { text: '目標との差', value: 'difference_value', width: 150}
+  { text: '目標との差', value: 'difference_value', width: 150 },
 ])
 const itemsSpend = ref<Item[]>([])
 const itemsCommon = ref<Item[]>([])
@@ -45,7 +45,12 @@ const getSpendAllSetItem = async () => {
       }
     })
     let differenceSpendTarget: number = category.spend_target_value - categorySum
-    spendCategoryTotals.value.push({ name: category.category, price: categorySum, target_value: category.spend_target_value, difference_value: differenceSpendTarget })
+    spendCategoryTotals.value.push({
+      name: category.category,
+      price: categorySum,
+      target_value: category.spend_target_value,
+      difference_value: differenceSpendTarget,
+    })
   })
   spendAll.value.forEach((spend) => {
     if (!spend.fixed_cost) {
@@ -79,9 +84,9 @@ const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): s
 }
 
 const bodyRowClassNameFunction: BodyRowClassNameFunction = (item: Item): string => {
-  if (parseFloat(item.difference_value.replace(/,/g, '')) < 0 ) return 'back-red'
+  if (parseFloat(item.difference_value.replace(/,/g, '')) < 0) return 'back-red'
   return ''
-};
+}
 
 onMounted(async () => {
   try {
@@ -115,7 +120,13 @@ onMounted(async () => {
     <div class="pie-chart-box"></div>
     <div class="spend-sum-table">
       <EasyDataTable :headers="headers" :items="itemsCommon" :rows-per-page="3" :body-item-class-name="bodyItemClassNameFunction" />
-      <EasyDataTable :headers="headers" :items="itemsSpend" :rows-per-page="50" :body-item-class-name="bodyItemClassNameFunction" :body-row-class-name="bodyRowClassNameFunction"/>
+      <EasyDataTable
+        :headers="headers"
+        :items="itemsSpend"
+        :rows-per-page="50"
+        :body-item-class-name="bodyItemClassNameFunction"
+        :body-row-class-name="bodyRowClassNameFunction"
+      />
     </div>
   </div>
 </template>
