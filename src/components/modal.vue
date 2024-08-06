@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ModalParams } from '../types.ts'
 import { computed, ref } from 'vue'
-import CoverBackground from '../parts/coverBackground.vue';
+import CoverBackground from '../parts/coverBackground.vue'
 
 const props = defineProps<ModalParams>()
 

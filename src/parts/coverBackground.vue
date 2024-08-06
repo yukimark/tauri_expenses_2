@@ -7,7 +7,7 @@ const props = defineProps<{
 
 const computedClass = computed(() => {
   return {
-    'hide-drawer': props.hideDrawer
+    'hide-drawer': props.hideDrawer,
   }
 })
 </script>

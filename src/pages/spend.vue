@@ -98,9 +98,8 @@ const submitForm = async () => {
   const value = formData.value
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
-    console.log('spend save success')
-    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' })
     getSpendAllSetItem()
+    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' })
   } catch (error) {
     console.error(error)
     setModalParams({ cssClass: 'error', message: 'お小遣い帳の保存に失敗しました。' })
@@ -132,8 +131,8 @@ const deleteItems = async (itemArray: Item[]) => {
   }
   const ids: number[] = itemArray.map((item) => item.id)
   await databaseStore.deleteSpendsMatchId(ids)
-  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
   getSpendAllSetItem()
+  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
 }
 
 const spendAllMonthToggle = async () => {
