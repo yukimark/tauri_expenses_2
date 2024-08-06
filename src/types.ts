@@ -29,3 +29,9 @@ export type ModalParams = {
   class: string
   message: string
 }
+
+export type SpendCategoryTotal = {
+  name: string
+  price: number
+  target_value: number
+}

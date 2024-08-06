@@ -4,7 +4,7 @@ import { useDatabaseStore } from '../stores/databaseStore'
 import { useCategoryStore } from '../stores/categoryStore.ts'
 import { CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
-import type { Header, Item, SortType, BodyItemClassNameFunction } from 'vue3-easy-data-table'
+import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
@@ -18,16 +18,14 @@ const lastMonth: string = formatDateToYYYYMMLastMonth(today)
 const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
-  { text: '日付', value: 'date', sortable: true, width: 110 },
+  { text: '日付', value: 'date', width: 110 },
   { text: '項目', value: 'category', width: 130 },
-  { text: '金額', value: 'price', sortable: true, width: 150 },
+  { text: '金額', value: 'price', width: 150 },
   { text: '固定費', value: 'fixed_cost', width: 90 },
   { text: '後払い', value: 'deferred_pay', width: 90 },
   { text: 'メモ', value: 'memo', width: 350 },
 ])
 const items = ref<Item[]>([])
-const sortBy: string[] = ['date', 'price']
-const sortType: SortType[] = ['desc', 'desc']
 const itemsSelected = ref<Item[]>([])
 
 const formData = ref<CreateSpend>({
@@ -88,6 +86,7 @@ const submitForm = async () => {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
     console.log('spend save success')
     setModalParams('success', 'お小遣い帳の保存に成功しました。')
+    getSpendAllSetItem()
   } catch (error) {
     console.error(error)
     setModalParams('error', 'お小遣い帳の保存に失敗しました。')
@@ -100,7 +99,6 @@ const submitForm = async () => {
     deferred_pay: false,
     memo: '',
   }
-  getSpendAllSetItem()
 }
 
 const modalClose = (isOpen: boolean) => {
@@ -192,15 +190,7 @@ const spendAllMonthToggle = async () => {
     </div>
   </div>
   <div class="table">
-    <EasyDataTable
-      v-model:items-selected="itemsSelected"
-      :headers="headers"
-      :items="items"
-      :sort-by="sortBy"
-      :sort-type="sortType"
-      multi-sort
-      :body-item-class-name="bodyItemClassNameFunction"
-    />
+    <EasyDataTable v-model:items-selected="itemsSelected" :headers="headers" :items="items" :body-item-class-name="bodyItemClassNameFunction" />
   </div>
   <Modal v-bind="modalParams" @modal-status="modalClose" />
 </template>
