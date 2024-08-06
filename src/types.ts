@@ -34,4 +34,5 @@ export type SpendCategoryTotal = {
   name: string
   price: number
   target_value: number
+  difference_value: number
 }
