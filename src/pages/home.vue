@@ -142,10 +142,10 @@ button:hover {
 }
 
 .pie-chart-box {
-  width: 400px;
+  width: 380px;
 }
 
 .spend-sum-table {
-  width: 600px;
+  width: 580px;
 }
 </style>
