@@ -4,7 +4,7 @@ import { useCategoryStore } from '../stores/categoryStore'
 import { formatDateToYYYYMM } from '../helper/formatDate'
 import { GetSpend, SpendCategoryTotal } from '../types'
 import { onMounted, ref } from 'vue'
-import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
+import type { Header, Item, BodyItemClassNameFunction, BodyRowClassNameFunction } from 'vue3-easy-data-table'
 
 const databaseStore = useDatabaseStore()
 const categoryStore = useCategoryStore()
@@ -25,6 +25,7 @@ const headers = ref<Header[]>([
   { text: '項目', value: 'name', width: 130 },
   { text: '金額', value: 'price', width: 150 },
   { text: '目標', value: 'target_value', width: 130 },
+  { text: '目標との差', value: 'difference_value', width: 150}
 ])
 const itemsSpend = ref<Item[]>([])
 const itemsCommon = ref<Item[]>([])
@@ -43,7 +44,8 @@ const getSpendAllSetItem = async () => {
         categorySum += spend.price
       }
     })
-    spendCategoryTotals.value.push({ name: category.category, price: categorySum, target_value: category.spend_target_value })
+    let differenceSpendTarget: number = category.spend_target_value - categorySum
+    spendCategoryTotals.value.push({ name: category.category, price: categorySum, target_value: category.spend_target_value, difference_value: differenceSpendTarget })
   })
   spendAll.value.forEach((spend) => {
     if (!spend.fixed_cost) {
@@ -67,13 +69,19 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
     ...spend,
     price: spend.price.toLocaleString(),
     target_value: spend.target_value.toLocaleString(),
+    difference_value: spend.difference_value.toLocaleString(),
   }))
 }
 
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
-  if (column === 'price' || column === 'target_value') return 'direction-right'
+  if (column === 'price' || column === 'target_value' || column === 'difference_value') return 'direction-right'
   return ''
 }
+
+const bodyRowClassNameFunction: BodyRowClassNameFunction = (item: Item): string => {
+  if (parseFloat(item.difference_value.replace(/,/g, '')) < 0 ) return 'back-red'
+  return ''
+};
 
 onMounted(async () => {
   try {
@@ -107,7 +115,7 @@ onMounted(async () => {
     <div class="pie-chart-box"></div>
     <div class="spend-sum-table">
       <EasyDataTable :headers="headers" :items="itemsCommon" :rows-per-page="3" :body-item-class-name="bodyItemClassNameFunction" />
-      <EasyDataTable :headers="headers" :items="itemsSpend" :rows-per-page="50" :body-item-class-name="bodyItemClassNameFunction" />
+      <EasyDataTable :headers="headers" :items="itemsSpend" :rows-per-page="50" :body-item-class-name="bodyItemClassNameFunction" :body-row-class-name="bodyRowClassNameFunction"/>
     </div>
   </div>
 </template>
