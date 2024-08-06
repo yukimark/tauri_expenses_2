@@ -57,7 +57,7 @@ const priceToLocale = (spendAll: GetSpend[]) => {
   }))
 }
 
-const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string, rowNumber: number): string => {
+const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
   if (column === 'price') return 'direction-right'
   if (column === 'fixed_cost' || column === 'deferred_pay') return 'direction-center'
   return ''

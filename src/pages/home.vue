@@ -70,7 +70,7 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   }))
 }
 
-const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string, rowNumber: number): string => {
+const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
   if (column === 'price' || column === 'target_value') return 'direction-right'
   return ''
 }
