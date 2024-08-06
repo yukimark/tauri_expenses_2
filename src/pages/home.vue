@@ -6,7 +6,6 @@ import { GetSpend, SpendCategoryTotal } from '../types'
 import { onMounted, ref } from 'vue'
 import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
 
-
 const databaseStore = useDatabaseStore()
 const categoryStore = useCategoryStore()
 
@@ -21,7 +20,6 @@ const selectedMonth = ref<string>(thisMonth)
 const spendPriceTotal = ref<number>(0)
 const spendFixedCostTotal = ref<number>(0)
 const spendDeferredPayTotal = ref<number>(0)
-
 
 const headers = ref<Header[]>([
   { text: '項目', value: 'name', width: 130 },
@@ -38,16 +36,16 @@ const getSpendAllSetItem = async () => {
   spendDeferredPayTotal.value = 0
   itemsCommon.value = []
   spendAll.value = await databaseStore.getSpendsYearMonth(selectedMonth.value)
-  categoryStore.category.forEach(category => {
-    let categorySum:number = 0
-    spendAll.value.forEach(spend => {
+  categoryStore.category.forEach((category) => {
+    let categorySum: number = 0
+    spendAll.value.forEach((spend) => {
       if (category.category === spend.category) {
         categorySum += spend.price
       }
     })
-    spendCategoryTotals.value.push({name: category.category, price: categorySum, target_value: category.spend_target_value})
+    spendCategoryTotals.value.push({ name: category.category, price: categorySum, target_value: category.spend_target_value })
   })
-  spendAll.value.forEach(spend => {
+  spendAll.value.forEach((spend) => {
     if (!spend.fixed_cost) {
       spendFixedCostTotal.value += spend.price
     }
@@ -60,7 +58,7 @@ const getSpendAllSetItem = async () => {
   itemsCommon.value = [
     { name: '合計', price: spendPriceTotal.value.toLocaleString(), target_value: 150000 },
     { name: '変動費', price: spendFixedCostTotal.value.toLocaleString(), target_value: 70000 },
-    { name: '後払い', price: spendDeferredPayTotal.value.toLocaleString(), target_value: 70000 }
+    { name: '後払い', price: spendDeferredPayTotal.value.toLocaleString(), target_value: 70000 },
   ]
 }
 
@@ -108,18 +106,8 @@ onMounted(async () => {
   <div class="contents">
     <div class="pie-chart-box"></div>
     <div class="spend-sum-table">
-      <EasyDataTable
-        :headers="headers"
-        :items="itemsCommon"
-        :rows-per-page="3"
-        :body-item-class-name="bodyItemClassNameFunction"
-      />
-      <EasyDataTable
-        :headers="headers"
-        :items="itemsSpend"
-        :rows-per-page="50"
-        :body-item-class-name="bodyItemClassNameFunction"
-      />
+      <EasyDataTable :headers="headers" :items="itemsCommon" :rows-per-page="3" :body-item-class-name="bodyItemClassNameFunction" />
+      <EasyDataTable :headers="headers" :items="itemsSpend" :rows-per-page="50" :body-item-class-name="bodyItemClassNameFunction" />
     </div>
   </div>
 </template>

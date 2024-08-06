@@ -190,12 +190,7 @@ const spendAllMonthToggle = async () => {
     </div>
   </div>
   <div class="table">
-    <EasyDataTable
-      v-model:items-selected="itemsSelected"
-      :headers="headers"
-      :items="items"
-      :body-item-class-name="bodyItemClassNameFunction"
-    />
+    <EasyDataTable v-model:items-selected="itemsSelected" :headers="headers" :items="items" :body-item-class-name="bodyItemClassNameFunction" />
   </div>
   <Modal v-bind="modalParams" @modal-status="modalClose" />
 </template>
