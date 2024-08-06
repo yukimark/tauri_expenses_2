@@ -4,7 +4,7 @@ import { useDatabaseStore } from '../stores/databaseStore'
 import { useCategoryStore } from '../stores/categoryStore.ts'
 import { CreateSpend, ModalParams, GetSpend } from '../types.ts'
 import Modal from '../components/modal.vue'
-import type { Header, Item, SortType, BodyItemClassNameFunction } from 'vue3-easy-data-table'
+import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
 const databaseStore = useDatabaseStore()
@@ -18,16 +18,14 @@ const lastMonth: string = formatDateToYYYYMMLastMonth(today)
 const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
-  { text: '日付', value: 'date', sortable: true, width: 110 },
+  { text: '日付', value: 'date', width: 110 },
   { text: '項目', value: 'category', width: 130 },
-  { text: '金額', value: 'price', sortable: true, width: 150 },
+  { text: '金額', value: 'price', width: 150 },
   { text: '固定費', value: 'fixed_cost', width: 90 },
   { text: '後払い', value: 'deferred_pay', width: 90 },
   { text: 'メモ', value: 'memo', width: 350 },
 ])
 const items = ref<Item[]>([])
-const sortBy: string[] = ['date', 'price']
-const sortType: SortType[] = ['desc', 'desc']
 const itemsSelected = ref<Item[]>([])
 
 const formData = ref<CreateSpend>({
@@ -196,9 +194,6 @@ const spendAllMonthToggle = async () => {
       v-model:items-selected="itemsSelected"
       :headers="headers"
       :items="items"
-      :sort-by="sortBy"
-      :sort-type="sortType"
-      multi-sort
       :body-item-class-name="bodyItemClassNameFunction"
     />
   </div>
