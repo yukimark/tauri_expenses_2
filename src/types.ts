@@ -28,6 +28,8 @@ export type ModalParams = {
   status: boolean
   class: string
   message: string
+  apply_button_message: string | undefined
+  close_button_message: string | undefined
 }
 
 export type SpendCategoryTotal = {

@@ -41,6 +41,8 @@ const modalParams = ref<ModalParams>({
   status: false,
   class: '',
   message: '',
+  apply_button_message: undefined,
+  close_button_message: undefined,
 })
 
 const spendAllMonthClicked = ref<boolean>(false)
@@ -63,11 +65,23 @@ const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): s
   return ''
 }
 
-const setModalParams = (cssClass: string, message: string) => {
+const setModalParams = ({
+  cssClass,
+  message,
+  apply_button_message,
+  close_button_message,
+}: {
+  cssClass: string
+  message: string
+  apply_button_message?: string
+  close_button_message?: string
+}) => {
   modalParams.value = {
     status: true,
     class: cssClass,
     message: message,
+    apply_button_message: apply_button_message,
+    close_button_message: close_button_message,
   }
 }
 
@@ -85,11 +99,11 @@ const submitForm = async () => {
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
     console.log('spend save success')
-    setModalParams('success', 'お小遣い帳の保存に成功しました。')
+    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' })
     getSpendAllSetItem()
   } catch (error) {
     console.error(error)
-    setModalParams('error', 'お小遣い帳の保存に失敗しました。')
+    setModalParams({ cssClass: 'error', message: 'お小遣い帳の保存に失敗しました。' })
   }
   formData.value = {
     date: yearMonthDay,
@@ -102,17 +116,23 @@ const submitForm = async () => {
 }
 
 const modalClose = (isOpen: boolean) => {
-  modalParams.value.status = isOpen
+  modalParams.value = {
+    status: isOpen,
+    class: '',
+    message: '',
+    apply_button_message: undefined,
+    close_button_message: undefined,
+  }
 }
 
 const deleteItems = async (itemArray: Item[]) => {
   if (itemArray.length === 0) {
-    setModalParams('success', '削除するときはアイテムにチェックを入れてください。')
+    setModalParams({ cssClass: 'success', message: '削除するときはアイテムにチェックを入れてください。' })
     return
   }
   const ids: number[] = itemArray.map((item) => item.id)
   await databaseStore.deleteSpendsMatchId(ids)
-  setModalParams('success', '選択したデータを削除しました。')
+  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
   getSpendAllSetItem()
 }
 
