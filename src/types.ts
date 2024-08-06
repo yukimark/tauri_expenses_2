@@ -1,6 +1,8 @@
 export type GetCategory = {
   id: number
   category: string
+  initial_flag: boolean
+  spend_target_value: number
 }
 
 export type CreateSpend = {
@@ -26,4 +28,10 @@ export type ModalParams = {
   status: boolean
   class: string
   message: string
+}
+
+export type SpendCategoryTotal = {
+  name: string
+  price: number
+  target_value: number
 }

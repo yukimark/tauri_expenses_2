@@ -1,8 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <p>config</p>
-  <p>まだなにも作ってない</p>
+  <div class="title"><h1>設定</h1></div>
 </template>
 
-<style scoped></style>
+<style></style>

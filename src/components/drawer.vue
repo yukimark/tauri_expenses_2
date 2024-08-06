@@ -3,11 +3,9 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
 const drawerFlag = ref<boolean>(false)
-const emit = defineEmits(['drawer-status'])
 
 function toggleDrawerMenu() {
   drawerFlag.value = !drawerFlag.value
-  emit('drawer-status', drawerFlag.value)
 }
 </script>
 
@@ -28,7 +26,7 @@ function toggleDrawerMenu() {
       <RouterLink to="/config">設定</RouterLink>
     </div>
   </div>
-  <div v-if="drawerFlag" class="drawer-background"></div>
+  <div v-if="drawerFlag" class="drawer-background" @click="toggleDrawerMenu"></div>
 </template>
 
 <style scoped>
@@ -84,7 +82,7 @@ function toggleDrawerMenu() {
 }
 
 .drawer-background {
-  background-color: rgb(85, 85, 85);
+  background-color: rgb(85, 85, 85, 0.7);
   z-index: 5;
   position: fixed;
   top: 0;
@@ -93,6 +91,5 @@ function toggleDrawerMenu() {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  opacity: 0.6;
 }
 </style>

@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import 'normalize.css'
-import { onMounted, ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Drawer from './components/drawer.vue'
 import { useDatabaseStore } from './stores/databaseStore'
+import { useCategoryStore } from './stores/categoryStore'
 
 const databaseStore = useDatabaseStore()
+const categoryStore = useCategoryStore()
+
+const isReady = ref<boolean>(false)
 
 onMounted(async () => {
-  databaseStore.loadDatabase()
+  await databaseStore.loadDatabase()
+  await categoryStore.set(await databaseStore.getCategoryAll())
+  isReady.value = true
 })
-
-const drawerState = ref<boolean>(false)
-const drawerStatus = (isOpen: boolean) => {
-  drawerState.value = isOpen
-}
 </script>
 
 <template>
-  <div class="container" :class="{ draweropen: drawerState.valueOf() }">
-    <Drawer @drawer-status="drawerStatus" />
-    <router-view />
+  <div class="container">
+    <Drawer />
+    <router-view v-if="isReady" />
   </div>
 </template>
 
@@ -61,10 +62,6 @@ html {
   position: relative;
 }
 
-.draweropen {
-  pointer-events: none;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -78,6 +75,8 @@ a:hover {
 h1 {
   text-align: center;
   margin: 0;
+  font-size: 28px;
+  font-weight: 500;
 }
 
 input {
@@ -113,6 +112,10 @@ button {
 
 p {
   margin: 0;
+}
+
+.title {
+  padding-top: 20px;
 }
 
 @media (prefers-color-scheme: dark) {
