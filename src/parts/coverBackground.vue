@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 const props = defineProps<{
-  hideDrawer: boolean
+  hideDrawer?: boolean
 }>()
 
 const computedClass = computed(() => {

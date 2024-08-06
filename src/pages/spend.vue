@@ -109,7 +109,7 @@ const submitForm = async () => {
     category_id: null,
     price: null,
     fixed_cost: false,
-    deferred_pay: false,
+    deferred_pay: true,
     memo: '',
   }
 }
