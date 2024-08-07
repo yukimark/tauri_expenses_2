@@ -2,8 +2,9 @@
 import { ref, onMounted } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
 import { useCategoryStore } from '../stores/categoryStore.ts'
-import { CreateSpend, ModalParams, GetSpend } from '../types.ts'
+import { CreateSpend, ModalParams, GetSpend, MultipleChoiceMenuParams } from '../types.ts'
 import Modal from '../components/modal.vue'
+import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue'
 import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
@@ -45,10 +46,15 @@ const modalParams = ref<ModalParams>({
   close_button_message: undefined,
 })
 
-const spendAllMonthClicked = ref<boolean>(false)
+const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
+  { id: 1, value: '今月' },
+  { id: 2, value: '先月' }
+]
+
+const getSpendAllYearMonth = ref<number>(1)
 
 const getSpendAllSetItem = async () => {
-  spendAll.value = await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth)
+  spendAll.value = await databaseStore.getSpendsYearMonth(getSpendAllYearMonth.value > 1 ? lastMonth : thisMonth)
   items.value = priceToLocale(spendAll.value)
 }
 
@@ -135,8 +141,8 @@ const deleteItems = async (itemArray: Item[]) => {
   setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
 }
 
-const spendAllMonthToggle = async () => {
-  spendAllMonthClicked.value = !spendAllMonthClicked.value
+const spendAllMonthToggle = async (index: number) => {
+  getSpendAllYearMonth.value = index
   getSpendAllSetItem()
 }
 </script>
@@ -194,13 +200,7 @@ const spendAllMonthToggle = async () => {
   </form>
 
   <div class="table-contents">
-    <div class="view-spend-toggle">
-      <button v-if="spendAllMonthClicked" @click="spendAllMonthToggle">今月</button>
-      <div v-else>今月</div>
-      <span>|</span>
-      <button v-if="!spendAllMonthClicked" @click="spendAllMonthToggle">先月</button>
-      <div v-else>先月</div>
-    </div>
+    <MultipleChoiceMenu :items="multipleChoiceMenuParams" @select-menu="spendAllMonthToggle"/>
     <div class="spend-trash">
       <button type="button" @click="deleteItems(itemsSelected)">
         <span>選択した項目を削除</span>
@@ -263,26 +263,6 @@ input {
   display: flex;
   margin: 0px 20px 0px;
   justify-content: space-between;
-}
-
-.view-spend-toggle {
-  display: flex;
-  margin-left: 10px;
-}
-
-.view-spend-toggle button {
-  text-decoration: underline;
-  color: rgb(106, 106, 196);
-}
-
-.view-spend-toggle button:hover {
-  color: red;
-  background-color: inherit;
-}
-
-.view-spend-toggle span {
-  margin-left: 5px;
-  margin-right: 8px;
 }
 
 .spend-trash {

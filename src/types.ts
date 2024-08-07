@@ -38,3 +38,8 @@ export type SpendCategoryTotal = {
   target_value: number
   difference_value: number
 }
+
+export type MultipleChoiceMenuParams = {
+  id: number
+  value: string
+}
