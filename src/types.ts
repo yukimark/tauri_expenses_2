@@ -43,3 +43,8 @@ export type MultipleChoiceMenuParams = {
   id: number
   value: string
 }
+
+export type CreateCategory = {
+  category: string
+  spend_target_value: number
+}
