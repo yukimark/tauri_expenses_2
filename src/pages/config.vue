@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue'
-import { MultipleChoiceMenuParams, CreateCategory, ModalParams } from '../types'
+import { MultipleChoiceMenuParams, CreateCategory, ModalParams, UpdateDeleteCategory } from '../types'
 import { ref } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
 import { useCategoryStore } from '../stores/categoryStore'
@@ -21,6 +21,13 @@ const formDataCreateCategory = ref<CreateCategory>({
   spend_target_value: 0,
 })
 
+const formDataUpdateDeleteCategory = ref<UpdateDeleteCategory>({
+  id: null,
+  category: '',
+  spend_target_value: 0,
+  initial_flag: true,
+})
+
 const modalParams = ref<ModalParams>({
   status: false,
   class: '',
@@ -28,6 +35,8 @@ const modalParams = ref<ModalParams>({
   apply_button_message: undefined,
   close_button_message: undefined,
 })
+
+const usedCategory = ref<boolean>(true)
 
 const setModalParams = ({
   cssClass,
@@ -61,6 +70,16 @@ const modalClose = (isOpen: boolean) => {
 
 const categoryMenuToggle = async (index: number) => {
   categoryMenuChoice.value = index
+  formDataCreateCategory.value = {
+    category: '',
+    spend_target_value: 0,
+  }
+  formDataUpdateDeleteCategory.value = {
+    id: null,
+    category: '',
+    spend_target_value: 0,
+    initial_flag: true,
+  }
 }
 
 const submitFormCreateCategory = async () => {
@@ -80,6 +99,20 @@ const submitFormCreateCategory = async () => {
 }
 
 const submitFormUpdateCategory = async () => {}
+
+const submitFormDeleteCategory = async () => {}
+
+const formDisplaySetParams = async () => {
+  const result = categoryStore.category.find((item) => item.id === formDataUpdateDeleteCategory.value.id)!
+  const data = await databaseStore.usedCategory(result.id)
+  usedCategory.value = data[0].exists_flag === 1
+  formDataUpdateDeleteCategory.value = {
+    id: result.id,
+    category: result.category,
+    spend_target_value: result.spend_target_value,
+    initial_flag: result.initial_flag,
+  }
+}
 </script>
 
 <template>
@@ -104,7 +137,34 @@ const submitFormUpdateCategory = async () => {}
     </form>
   </div>
   <div v-if="categoryMenuChoice === 2">
-    <form @submit.prevent="submitFormUpdateCategory"></form>
+    <form>
+      <div class="form-row mb-20">
+        <div class="form-contents">
+          <label for="input-category">項目</label>
+          <select id="input-category" @change="formDisplaySetParams" v-model="formDataUpdateDeleteCategory.id" required>
+            <option v-for="category in categoryStore.category" :value="category.id" :key="category.id">
+              {{ category.category }}
+            </option>
+          </select>
+        </div>
+        <div v-if="formDataUpdateDeleteCategory.id" style="display: flex">
+          <div v-if="!formDataUpdateDeleteCategory.initial_flag && !usedCategory" class="form-contents">
+            <label for="input-category">項目</label>
+            <input type="text" v-model="formDataUpdateDeleteCategory.category" />
+          </div>
+          <div v-else class="form-contents">
+            <label for="input-category">項目</label>
+            <input type="text" v-model="formDataUpdateDeleteCategory.category" readonly class="read-only" />
+          </div>
+          <div class="form-contents">
+            <label for="input-spend-target-value">目標値</label>
+            <input type="number" v-model="formDataUpdateDeleteCategory.spend_target_value" />
+          </div>
+          <button @click="submitFormUpdateCategory" type="button">更新</button>
+          <button v-if="!formDataUpdateDeleteCategory.initial_flag && !usedCategory" @click="submitFormDeleteCategory" type="button">削除</button>
+        </div>
+      </div>
+    </form>
   </div>
   <Modal v-bind="modalParams" @modal-status="modalClose" />
 </template>
@@ -120,5 +180,9 @@ button {
 
 .select-menu {
   margin: 0px 30px 0px;
+}
+
+.read-only {
+  background-color: rgb(223, 222, 222);
 }
 </style>

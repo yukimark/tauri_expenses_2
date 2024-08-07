@@ -78,5 +78,23 @@ export const useDatabaseStore = defineStore('database', () => {
     db.value.execute('INSERT into categories (category, spend_target_value, initial_flag) VALUES ($1, $2, $3)', params)
   }
 
-  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendsMatchId, createCategory }
+  const usedCategory = async (id: number): Promise<[{ exists_flag: number }]> => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    return db.value.select(`SELECT EXISTS (SELECT 1 FROM spends WHERE category_id == ${id}) AS exists_flag;`)
+  }
+
+  return {
+    db,
+    loadDatabase,
+    executeQuery,
+    selectQuery,
+    getSpendsYearMonth,
+    getCategoryAll,
+    createSpend,
+    deleteSpendsMatchId,
+    createCategory,
+    usedCategory,
+  }
 })
