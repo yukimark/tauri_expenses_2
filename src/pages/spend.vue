@@ -150,8 +150,8 @@ const spendAllMonthToggle = async (index: number) => {
 <template>
   <div class="title"><h1>お小遣い帳</h1></div>
   <form @submit.prevent="submitForm">
-    <div class="spend-form-row1">
-      <div class="input-date spend-form-contents">
+    <div class="form-row">
+      <div class="input-date form-contents">
         <p>日付</p>
         <VueDatePicker
           class="custom-date-picker"
@@ -167,7 +167,7 @@ const spendAllMonthToggle = async (index: number) => {
           :max-date="new Date()"
         />
       </div>
-      <div class="input-category-id spend-form-contents">
+      <div class="input-category-id form-contents">
         <label for="input-category">項目</label>
         <select id="input-category" v-model="formData.category_id" required>
           <option v-for="category in categoryStore.category" :value="category.id" :key="category.id">
@@ -175,25 +175,25 @@ const spendAllMonthToggle = async (index: number) => {
           </option>
         </select>
       </div>
-      <div class="input-price spend-form-contents">
+      <div class="input-price form-contents">
         <label for="input-price">金額</label>
         <input type="number" id="input-price" v-model="formData.price" required />
       </div>
     </div>
-    <div class="spend-form-row2">
-      <div class="spend-form-contents">
+    <div class="form-row-last">
+      <div class="form-contents">
         <input type="checkbox" id="fixed-cost" v-model="formData.fixed_cost" />
         <label for="fixed-cost">固定費</label>
       </div>
-      <div class="spend-form-contents">
+      <div class="form-contents">
         <input type="checkbox" id="deferred-pay" v-model="formData.deferred_pay" />
         <label for="deferred-pay">後払い</label>
       </div>
-      <div class="spend-form-contents">
+      <div class="form-contents">
         <label for="input-memo">メモ</label>
         <input type="text" id="input-memo" v-model="formData.memo" />
       </div>
-      <div class="spend-form-contents spend-form-button">
+      <div class="form-contents spend-form-button">
         <button>Save</button>
       </div>
     </div>
@@ -215,43 +215,8 @@ const spendAllMonthToggle = async (index: number) => {
 </template>
 
 <style scoped>
-input {
-  outline: solid 1px gray;
-}
-
-.spend-form-row1 {
-  display: flex;
-  margin-top: 20px;
-  height: 40px;
-  line-height: 40px;
-}
-
-.spend-form-row1 label {
-  margin-right: 10px;
-}
-
-.spend-form-contents {
-  margin-left: 20px;
-}
-
-.input-date {
-  display: flex;
-}
-
 .custom-date-picker {
   width: 150px;
-  margin-left: 10px;
-}
-
-.spend-form-row2 {
-  display: flex;
-  margin-top: 20px;
-  height: 40px;
-  line-height: 40px;
-  margin-bottom: 20px;
-}
-
-.spend-form-row2 label {
   margin-left: 10px;
 }
 

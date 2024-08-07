@@ -100,7 +100,7 @@ onMounted(async () => {
 
 <template>
   <div class="title"><h1>ホーム</h1></div>
-  <div class="select-month">
+  <div class="select-month input-date">
     <p>年月</p>
     <VueDatePicker
       class="custom-date-picker"
@@ -133,7 +133,6 @@ onMounted(async () => {
 
 <style scoped>
 .select-month {
-  display: flex;
   height: 40px;
   line-height: 40px;
   margin-top: 30px;
