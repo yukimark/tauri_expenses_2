@@ -43,7 +43,7 @@ const selectMenuChange = (index: number) => {
 }
 
 .multiple-choice-menu span {
-  margin-left: 5px;
+  margin-left: 8px;
   margin-right: 8px;
 }
 </style>

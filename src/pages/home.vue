@@ -148,6 +148,7 @@ onMounted(async () => {
 
 button {
   background-color: lightgray;
+  padding: 0px 5px 0px;
 }
 
 button:hover {

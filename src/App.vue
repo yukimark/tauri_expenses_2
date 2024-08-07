@@ -103,6 +103,7 @@ button {
   border: none;
   width: inherit;
   height: inherit;
+  padding: 0;
 }
 
 button:hover {
