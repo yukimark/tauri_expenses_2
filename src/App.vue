@@ -79,6 +79,11 @@ h1 {
   font-weight: 500;
 }
 
+form {
+  margin: 30px;
+  border: solid 2px rgb(106, 106, 196);
+}
+
 input {
   border-radius: 8px;
   border: 1px solid transparent;

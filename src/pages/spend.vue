@@ -215,11 +215,6 @@ const spendAllMonthToggle = async () => {
 </template>
 
 <style scoped>
-form {
-  margin: 30px;
-  border: solid 2px rgb(106, 106, 196);
-}
-
 input {
   outline: solid 1px gray;
 }
