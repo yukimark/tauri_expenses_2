@@ -48,7 +48,7 @@ const modalParams = ref<ModalParams>({
 
 const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
   { id: 1, value: '今月' },
-  { id: 2, value: '先月' }
+  { id: 2, value: '先月' },
 ]
 
 const getSpendAllYearMonth = ref<number>(1)
@@ -104,7 +104,7 @@ const submitForm = async () => {
   const value = formData.value
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
-    getSpendAllSetItem()
+    await getSpendAllSetItem()
     setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' })
   } catch (error) {
     console.error(error)
@@ -200,7 +200,7 @@ const spendAllMonthToggle = async (index: number) => {
   </form>
 
   <div class="table-contents">
-    <MultipleChoiceMenu :items="multipleChoiceMenuParams" @select-menu="spendAllMonthToggle"/>
+    <MultipleChoiceMenu :items="multipleChoiceMenuParams" @select-menu="spendAllMonthToggle" />
     <div class="spend-trash">
       <button type="button" @click="deleteItems(itemsSelected)">
         <span>選択した項目を削除</span>
