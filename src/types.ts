@@ -48,3 +48,10 @@ export type CreateCategory = {
   category: string
   spend_target_value: number
 }
+
+export type UpdateDeleteCategory = {
+  id: number | null
+  category: string
+  spend_target_value: number
+  initial_flag: boolean
+}
