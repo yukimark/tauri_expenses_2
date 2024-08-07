@@ -46,7 +46,9 @@ export const useDatabaseStore = defineStore('database', () => {
     )
   }
 
-  const createSpend = async (params: any[]) => {
+  const createSpend = async (
+    params: [date: string, category_id: number | null, price: number | null, fixed_cost: boolean, deferred_pay: boolean, memo: string],
+  ) => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
@@ -68,5 +70,13 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select('SELECT id, category, initial_flag, spend_target_value FROM categories order by id asc;')
   }
 
-  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendsMatchId }
+  const createCategory = async (params: [category: string, spend_target_value: number]) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    params.push(0)
+    db.value.execute('INSERT into categories (category, spend_target_value, initial_flag) VALUES ($1, $2, $3)', params)
+  }
+
+  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendsMatchId, createCategory }
 })
