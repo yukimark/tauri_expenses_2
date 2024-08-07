@@ -154,7 +154,7 @@ const formDisplaySetParams = async () => {
           </div>
           <div v-else class="form-contents">
             <label for="input-category">項目</label>
-            <input type="text" v-model="formDataUpdateDeleteCategory.category" readonly class="read-only"/>
+            <input type="text" v-model="formDataUpdateDeleteCategory.category" readonly class="read-only" />
           </div>
           <div class="form-contents">
             <label for="input-spend-target-value">目標値</label>
