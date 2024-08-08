@@ -55,3 +55,9 @@ export type UpdateDeleteCategory = {
   spend_target_value: number
   initial_flag: boolean
 }
+
+export type GetProfile = {
+  target_value_total_price: number
+  target_value_fixed_cost: number
+  target_value_deferred_pay: number
+}

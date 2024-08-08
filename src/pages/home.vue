@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDatabaseStore } from '../stores/databaseStore'
 import { useCategoryStore } from '../stores/categoryStore'
+import { useProfileStore } from '../stores/profileStore'
 import { formatDateToYYYYMM } from '../helper/formatDate'
 import { GetSpend, SpendCategoryTotal } from '../types'
 import { onMounted, ref } from 'vue'
@@ -8,6 +9,7 @@ import type { Header, Item, BodyItemClassNameFunction, BodyRowClassNameFunction 
 
 const databaseStore = useDatabaseStore()
 const categoryStore = useCategoryStore()
+const profileStore = useProfileStore()
 
 const today: Date = new Date()
 const thisMonth: string = formatDateToYYYYMM(today)
@@ -63,10 +65,15 @@ const getSpendAllSetItem = async () => {
   })
   itemsSpend.value = priceToLocale(spendCategoryTotals.value)
   itemsCommon.value = [
-    { name: '合計', price: spendPriceTotal.value.toLocaleString(), target_value: 150000 },
-    { name: '変動費', price: spendFixedCostTotal.value.toLocaleString(), target_value: 70000 },
-    { name: '後払い', price: spendDeferredPayTotal.value.toLocaleString(), target_value: 70000 },
+    { name: '合計', price: spendPriceTotal.value, target_value: profileStore.profile[0].target_value_total_price },
+    { name: '変動費', price: spendFixedCostTotal.value, target_value: profileStore.profile[0].target_value_fixed_cost },
+    { name: '後払い', price: spendDeferredPayTotal.value, target_value: profileStore.profile[0].target_value_deferred_pay },
   ]
+  itemsCommon.value.forEach((itemCommon) => {
+    let differenceValue: number = itemCommon.target_value - itemCommon.price
+    itemCommon['difference_value'] = differenceValue
+  })
+  itemsCommon.value = totalPriceToLocale(itemsCommon.value)
 }
 
 const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
@@ -75,6 +82,15 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
     price: spend.price.toLocaleString(),
     target_value: spend.target_value.toLocaleString(),
     difference_value: spend.difference_value.toLocaleString(),
+  }))
+}
+
+const totalPriceToLocale = (itemsCommon: Item[]) => {
+  return itemsCommon.map((item) => ({
+    ...item,
+    price: item.price.toLocaleString(),
+    target_value: item.target_value.toLocaleString(),
+    difference_value: item.difference_value.toLocaleString(),
   }))
 }
 
@@ -119,7 +135,13 @@ onMounted(async () => {
   <div class="contents">
     <div class="pie-chart-box"></div>
     <div class="spend-sum-table">
-      <EasyDataTable :headers="headers" :items="itemsCommon" :rows-per-page="3" :body-item-class-name="bodyItemClassNameFunction" />
+      <EasyDataTable
+        :headers="headers"
+        :items="itemsCommon"
+        :rows-per-page="3"
+        :body-item-class-name="bodyItemClassNameFunction"
+        :body-row-class-name="bodyRowClassNameFunction"
+      />
       <EasyDataTable
         :headers="headers"
         :items="itemsSpend"
