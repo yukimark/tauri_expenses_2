@@ -19,8 +19,8 @@ export type GetSpend = {
   date: string
   category: string
   price: number
-  fixed_cost: boolean
-  deferred_pay: boolean
+  fixed_cost: string
+  deferred_pay: string
   memo: string
 }
 
@@ -54,4 +54,10 @@ export type UpdateDeleteCategory = {
   category: string
   spend_target_value: number
   initial_flag: boolean
+}
+
+export type GetProfile = {
+  target_value_total_price: number
+  target_value_fixed_cost: number
+  target_value_deferred_pay: number
 }

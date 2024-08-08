@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import Database from '@tauri-apps/plugin-sql'
-import { GetCategory, GetSpend } from '../types.ts'
+import { GetCategory, GetSpend, GetProfile } from '../types.ts'
 
 export const useDatabaseStore = defineStore('database', () => {
   const db = ref<Database | null>(null)
@@ -106,6 +106,13 @@ export const useDatabaseStore = defineStore('database', () => {
     db.value.execute(`BEGIN TRANSACTION; DELETE FROM categories WHERE id = ${id}; COMMIT;`)
   }
 
+  const getProfile = async (): Promise<GetProfile[]> => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    return db.value.select('SELECT target_value_total_price, target_value_fixed_cost, target_value_deferred_pay FROM profiles WHERE id = 1;')
+  }
+
   return {
     db,
     loadDatabase,
@@ -119,5 +126,6 @@ export const useDatabaseStore = defineStore('database', () => {
     usedCategory,
     updateCategory,
     deleteCategory,
+    getProfile,
   }
 })

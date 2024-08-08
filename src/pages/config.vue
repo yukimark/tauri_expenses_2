@@ -4,6 +4,7 @@ import { MultipleChoiceMenuParams, CreateCategory, ModalParams, UpdateDeleteCate
 import { ref } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
 import { useCategoryStore } from '../stores/categoryStore'
+// import { useProfileStore } from '../stores/profileStore'
 import Modal from '../components/modal.vue'
 
 const databaseStore = useDatabaseStore()

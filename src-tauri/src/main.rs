@@ -23,7 +23,13 @@ fn main() {
       description: "insert_seeds_to_categories",
       sql: include_str!("migration/add_category_to_categories.sql"),
       kind: tauri_plugin_sql::MigrationKind::Up,
-    }
+    },
+    Migration {
+      version: 4,
+      description: "create_profiles_table",
+      sql: include_str!("migration/create_profiles.sql"),
+      kind: tauri_plugin_sql::MigrationKind::Up,
+    },
   ];
 
   tauri::Builder::default()
