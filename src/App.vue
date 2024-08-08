@@ -4,15 +4,18 @@ import { ref, onMounted } from 'vue'
 import Drawer from './components/drawer.vue'
 import { useDatabaseStore } from './stores/databaseStore'
 import { useCategoryStore } from './stores/categoryStore'
+import { useProfileStore } from './stores/profileStore'
 
 const databaseStore = useDatabaseStore()
 const categoryStore = useCategoryStore()
+const profileStore = useProfileStore()
 
 const isReady = ref<boolean>(false)
 
 onMounted(async () => {
   await databaseStore.loadDatabase()
   await categoryStore.set(await databaseStore.getCategoryAll())
+  await profileStore.set(await databaseStore.getProfile())
   isReady.value = true
 })
 </script>

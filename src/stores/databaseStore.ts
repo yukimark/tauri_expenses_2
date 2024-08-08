@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import Database from '@tauri-apps/plugin-sql'
-import { GetCategory, GetSpend } from '../types.ts'
+import { GetCategory, GetSpend, GetUpdateProfile } from '../types.ts'
 
 export const useDatabaseStore = defineStore('database', () => {
   const db = ref<Database | null>(null)
@@ -106,6 +106,27 @@ export const useDatabaseStore = defineStore('database', () => {
     db.value.execute(`BEGIN TRANSACTION; DELETE FROM categories WHERE id = ${id}; COMMIT;`)
   }
 
+  const getProfile = async (): Promise<GetUpdateProfile[]> => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    return db.value.select('SELECT target_value_total_price, target_value_fixed_cost, target_value_deferred_pay FROM profiles WHERE id = 1;')
+  }
+
+  const updateProfile = async (params: [target_value_total_price: number, target_value_fixed_cost: number, target_value_deferred_pay: number]) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    db.value.execute(
+      `
+      UPDATE profiles
+      SET target_value_total_price = ?, target_value_fixed_cost = ?, target_value_deferred_pay = ?
+      WHERE id = 1;
+      `,
+      params,
+    )
+  }
+
   return {
     db,
     loadDatabase,
@@ -119,5 +140,7 @@ export const useDatabaseStore = defineStore('database', () => {
     usedCategory,
     updateCategory,
     deleteCategory,
+    getProfile,
+    updateProfile,
   }
 })
