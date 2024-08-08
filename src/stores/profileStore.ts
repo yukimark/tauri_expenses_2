@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { GetProfile } from '../types.ts'
+import { GetUpdateProfile } from '../types.ts'
 
 export const useProfileStore = defineStore('profile', () => {
-  const profile = ref<GetProfile[]>([])
+  const profile = ref<GetUpdateProfile[]>([])
 
-  const set = async (params: GetProfile[]) => {
+  const set = async (params: GetUpdateProfile[]) => {
     profile.value = params
   }
 

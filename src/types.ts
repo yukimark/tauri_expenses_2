@@ -56,7 +56,7 @@ export type UpdateDeleteCategory = {
   initial_flag: boolean
 }
 
-export type GetProfile = {
+export type GetUpdateProfile = {
   target_value_total_price: number
   target_value_fixed_cost: number
   target_value_deferred_pay: number

@@ -1,6 +1,6 @@
 {
   "productName": "tauri_expenses_2",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "identifier": "tauri.expenses2",
   "build": {
     "beforeDevCommand": "npm run dev",
