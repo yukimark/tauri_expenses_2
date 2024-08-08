@@ -98,9 +98,41 @@ const submitFormCreateCategory = async () => {
   }
 }
 
-const submitFormUpdateCategory = async () => {}
+const submitFormUpdateCategory = async () => {
+  const value = formDataUpdateDeleteCategory.value
+  try {
+    await databaseStore.updateCategory([value.category, value.spend_target_value, value.id!])
+    await categoryStore.set(await databaseStore.getCategoryAll())
+    setModalParams({ cssClass: 'success', message: '項目の更新に成功しました。' })
+  } catch (error) {
+    console.error(error)
+    setModalParams({ cssClass: 'error', message: '項目の更新に失敗しました。' })
+  }
+  formDataUpdateDeleteCategory.value = {
+    id: null,
+    category: '',
+    spend_target_value: 0,
+    initial_flag: true,
+  }
+}
 
-const submitFormDeleteCategory = async () => {}
+const submitFormDeleteCategory = async () => {
+  const value = formDataUpdateDeleteCategory.value
+  try {
+    await databaseStore.deleteCategory(value.id!)
+    await categoryStore.set(await databaseStore.getCategoryAll())
+    setModalParams({ cssClass: 'success', message: '項目の削除に成功しました。' })
+  } catch (error) {
+    console.error(error)
+    setModalParams({ cssClass: 'error', message: '項目の削除に失敗しました。' })
+  }
+  formDataUpdateDeleteCategory.value = {
+    id: null,
+    category: '',
+    spend_target_value: 0,
+    initial_flag: true,
+  }
+}
 
 const formDisplaySetParams = async () => {
   const result = categoryStore.category.find((item) => item.id === formDataUpdateDeleteCategory.value.id)!

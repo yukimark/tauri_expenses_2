@@ -85,6 +85,27 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select(`SELECT EXISTS (SELECT 1 FROM spends WHERE category_id == ${id}) AS exists_flag;`)
   }
 
+  const updateCategory = async (params: [category: string, spend_target_value: number, id: number]) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    db.value.execute(
+      `
+      UPDATE categories
+      SET category = ?, spend_target_value = ?
+      WHERE id = ?;
+      `,
+      params,
+    )
+  }
+
+  const deleteCategory = async (id: number) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    db.value.execute(`BEGIN TRANSACTION; DELETE FROM categories WHERE id = ${id}; COMMIT;`)
+  }
+
   return {
     db,
     loadDatabase,
@@ -96,5 +117,7 @@ export const useDatabaseStore = defineStore('database', () => {
     deleteSpendsMatchId,
     createCategory,
     usedCategory,
+    updateCategory,
+    deleteCategory,
   }
 })
