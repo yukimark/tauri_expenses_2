@@ -19,8 +19,8 @@ export type GetSpend = {
   date: string
   category: string
   price: number
-  fixed_cost: boolean
-  deferred_pay: boolean
+  fixed_cost: string
+  deferred_pay: string
   memo: string
 }
 

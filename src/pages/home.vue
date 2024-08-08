@@ -55,10 +55,10 @@ const getSpendAllSetItem = async () => {
     })
   })
   spendAll.value.forEach((spend) => {
-    if (!spend.fixed_cost) {
+    if (spend.fixed_cost === 'false') {
       spendFixedCostTotal.value += spend.price
     }
-    if (spend.deferred_pay) {
+    if (spend.deferred_pay === 'true') {
       spendDeferredPayTotal.value += spend.price
     }
     spendPriceTotal.value += spend.price
