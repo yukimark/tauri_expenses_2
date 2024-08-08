@@ -79,6 +79,11 @@ h1 {
   font-weight: 500;
 }
 
+form {
+  margin: 30px;
+  border: solid 2px rgb(106, 106, 196);
+}
+
 input {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -90,6 +95,7 @@ input {
   background-color: #ffffff;
   transition: border-color 0.25s;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  outline: solid 1px gray;
 }
 
 button {
@@ -98,6 +104,7 @@ button {
   border: none;
   width: inherit;
   height: inherit;
+  padding: 0;
 }
 
 button:hover {
@@ -116,6 +123,41 @@ p {
 
 .title {
   padding-top: 20px;
+}
+
+.form-row {
+  display: flex;
+  margin-top: 20px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.form-row label {
+  margin-right: 10px;
+}
+
+.form-row-last {
+  display: flex;
+  margin-top: 20px;
+  height: 40px;
+  line-height: 40px;
+  margin-bottom: 20px;
+}
+
+.form-row-last label {
+  margin-left: 10px;
+}
+
+.form-contents {
+  margin-left: 20px;
+}
+
+.input-date {
+  display: flex;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
 }
 
 @media (prefers-color-scheme: dark) {

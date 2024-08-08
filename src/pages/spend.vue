@@ -2,8 +2,9 @@
 import { ref, onMounted } from 'vue'
 import { useDatabaseStore } from '../stores/databaseStore'
 import { useCategoryStore } from '../stores/categoryStore.ts'
-import { CreateSpend, ModalParams, GetSpend } from '../types.ts'
+import { CreateSpend, ModalParams, GetSpend, MultipleChoiceMenuParams } from '../types.ts'
 import Modal from '../components/modal.vue'
+import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue'
 import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
 import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
@@ -41,12 +42,19 @@ const modalParams = ref<ModalParams>({
   status: false,
   class: '',
   message: '',
+  apply_button_message: undefined,
+  close_button_message: undefined,
 })
 
-const spendAllMonthClicked = ref<boolean>(false)
+const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
+  { id: 1, value: '今月' },
+  { id: 2, value: '先月' },
+]
+
+const getSpendAllYearMonth = ref<number>(1)
 
 const getSpendAllSetItem = async () => {
-  spendAll.value = await databaseStore.getSpendsYearMonth(spendAllMonthClicked.value ? lastMonth : thisMonth)
+  spendAll.value = await databaseStore.getSpendsYearMonth(getSpendAllYearMonth.value > 1 ? lastMonth : thisMonth)
   items.value = priceToLocale(spendAll.value)
 }
 
@@ -63,11 +71,23 @@ const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): s
   return ''
 }
 
-const setModalParams = (cssClass: string, message: string) => {
+const setModalParams = ({
+  cssClass,
+  message,
+  apply_button_message,
+  close_button_message,
+}: {
+  cssClass: string
+  message: string
+  apply_button_message?: string
+  close_button_message?: string
+}) => {
   modalParams.value = {
     status: true,
     class: cssClass,
     message: message,
+    apply_button_message: apply_button_message,
+    close_button_message: close_button_message,
   }
 }
 
@@ -84,40 +104,45 @@ const submitForm = async () => {
   const value = formData.value
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
-    console.log('spend save success')
-    setModalParams('success', 'お小遣い帳の保存に成功しました。')
-    getSpendAllSetItem()
+    await getSpendAllSetItem()
+    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' })
   } catch (error) {
     console.error(error)
-    setModalParams('error', 'お小遣い帳の保存に失敗しました。')
+    setModalParams({ cssClass: 'error', message: 'お小遣い帳の保存に失敗しました。' })
   }
   formData.value = {
     date: yearMonthDay,
     category_id: null,
     price: null,
     fixed_cost: false,
-    deferred_pay: false,
+    deferred_pay: true,
     memo: '',
   }
 }
 
 const modalClose = (isOpen: boolean) => {
-  modalParams.value.status = isOpen
+  modalParams.value = {
+    status: isOpen,
+    class: '',
+    message: '',
+    apply_button_message: undefined,
+    close_button_message: undefined,
+  }
 }
 
 const deleteItems = async (itemArray: Item[]) => {
   if (itemArray.length === 0) {
-    setModalParams('success', '削除するときはアイテムにチェックを入れてください。')
+    setModalParams({ cssClass: 'success', message: '削除するときはアイテムにチェックを入れてください。' })
     return
   }
   const ids: number[] = itemArray.map((item) => item.id)
   await databaseStore.deleteSpendsMatchId(ids)
-  setModalParams('success', '選択したデータを削除しました。')
   getSpendAllSetItem()
+  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
 }
 
-const spendAllMonthToggle = async () => {
-  spendAllMonthClicked.value = !spendAllMonthClicked.value
+const spendAllMonthToggle = async (index: number) => {
+  getSpendAllYearMonth.value = index
   getSpendAllSetItem()
 }
 </script>
@@ -125,8 +150,8 @@ const spendAllMonthToggle = async () => {
 <template>
   <div class="title"><h1>お小遣い帳</h1></div>
   <form @submit.prevent="submitForm">
-    <div class="spend-form-row1">
-      <div class="input-date spend-form-contents">
+    <div class="form-row">
+      <div class="input-date form-contents">
         <p>日付</p>
         <VueDatePicker
           class="custom-date-picker"
@@ -142,7 +167,7 @@ const spendAllMonthToggle = async () => {
           :max-date="new Date()"
         />
       </div>
-      <div class="input-category-id spend-form-contents">
+      <div class="input-category-id form-contents">
         <label for="input-category">項目</label>
         <select id="input-category" v-model="formData.category_id" required>
           <option v-for="category in categoryStore.category" :value="category.id" :key="category.id">
@@ -150,38 +175,32 @@ const spendAllMonthToggle = async () => {
           </option>
         </select>
       </div>
-      <div class="input-price spend-form-contents">
+      <div class="input-price form-contents">
         <label for="input-price">金額</label>
         <input type="number" id="input-price" v-model="formData.price" required />
       </div>
     </div>
-    <div class="spend-form-row2">
-      <div class="spend-form-contents">
+    <div class="form-row-last">
+      <div class="form-contents">
         <input type="checkbox" id="fixed-cost" v-model="formData.fixed_cost" />
         <label for="fixed-cost">固定費</label>
       </div>
-      <div class="spend-form-contents">
+      <div class="form-contents">
         <input type="checkbox" id="deferred-pay" v-model="formData.deferred_pay" />
         <label for="deferred-pay">後払い</label>
       </div>
-      <div class="spend-form-contents">
+      <div class="form-contents">
         <label for="input-memo">メモ</label>
         <input type="text" id="input-memo" v-model="formData.memo" />
       </div>
-      <div class="spend-form-contents spend-form-button">
+      <div class="form-contents spend-form-button">
         <button>Save</button>
       </div>
     </div>
   </form>
 
   <div class="table-contents">
-    <div class="view-spend-toggle">
-      <button v-if="spendAllMonthClicked" @click="spendAllMonthToggle">今月</button>
-      <div v-else>今月</div>
-      <span>|</span>
-      <button v-if="!spendAllMonthClicked" @click="spendAllMonthToggle">先月</button>
-      <div v-else>先月</div>
-    </div>
+    <MultipleChoiceMenu :items="multipleChoiceMenuParams" @select-menu="spendAllMonthToggle" />
     <div class="spend-trash">
       <button type="button" @click="deleteItems(itemsSelected)">
         <span>選択した項目を削除</span>
@@ -196,48 +215,8 @@ const spendAllMonthToggle = async () => {
 </template>
 
 <style scoped>
-form {
-  margin: 30px;
-  border: solid 2px rgb(106, 106, 196);
-}
-
-input {
-  outline: solid 1px gray;
-}
-
-.spend-form-row1 {
-  display: flex;
-  margin-top: 20px;
-  height: 40px;
-  line-height: 40px;
-}
-
-.spend-form-row1 label {
-  margin-right: 10px;
-}
-
-.spend-form-contents {
-  margin-left: 20px;
-}
-
-.input-date {
-  display: flex;
-}
-
 .custom-date-picker {
   width: 150px;
-  margin-left: 10px;
-}
-
-.spend-form-row2 {
-  display: flex;
-  margin-top: 20px;
-  height: 40px;
-  line-height: 40px;
-  margin-bottom: 20px;
-}
-
-.spend-form-row2 label {
   margin-left: 10px;
 }
 
@@ -249,26 +228,6 @@ input {
   display: flex;
   margin: 0px 20px 0px;
   justify-content: space-between;
-}
-
-.view-spend-toggle {
-  display: flex;
-  margin-left: 10px;
-}
-
-.view-spend-toggle button {
-  text-decoration: underline;
-  color: rgb(106, 106, 196);
-}
-
-.view-spend-toggle button:hover {
-  color: red;
-  background-color: inherit;
-}
-
-.view-spend-toggle span {
-  margin-left: 5px;
-  margin-right: 8px;
 }
 
 .spend-trash {

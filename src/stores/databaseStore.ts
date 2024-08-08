@@ -46,11 +46,13 @@ export const useDatabaseStore = defineStore('database', () => {
     )
   }
 
-  const createSpend = async (params: any[]) => {
+  const createSpend = async (
+    params: [date: string, category_id: number | null, price: number | null, fixed_cost: boolean, deferred_pay: boolean, memo: string],
+  ) => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
-    db.value.execute('INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6)', params)
+    db.value.execute('INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);', params)
   }
 
   const deleteSpendsMatchId = async (params: number[]) => {
@@ -68,5 +70,54 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select('SELECT id, category, initial_flag, spend_target_value FROM categories order by id asc;')
   }
 
-  return { db, loadDatabase, executeQuery, selectQuery, getSpendsYearMonth, getCategoryAll, createSpend, deleteSpendsMatchId }
+  const createCategory = async (params: [category: string, spend_target_value: number]) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    params.push(0)
+    db.value.execute('INSERT into categories (category, spend_target_value, initial_flag) VALUES ($1, $2, $3);', params)
+  }
+
+  const usedCategory = async (id: number): Promise<[{ exists_flag: number }]> => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    return db.value.select(`SELECT EXISTS (SELECT 1 FROM spends WHERE category_id == ${id}) AS exists_flag;`)
+  }
+
+  const updateCategory = async (params: [category: string, spend_target_value: number, id: number]) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    db.value.execute(
+      `
+      UPDATE categories
+      SET category = ?, spend_target_value = ?
+      WHERE id = ?;
+      `,
+      params,
+    )
+  }
+
+  const deleteCategory = async (id: number) => {
+    if (!db.value) {
+      throw new Error('Database is not connected')
+    }
+    db.value.execute(`BEGIN TRANSACTION; DELETE FROM categories WHERE id = ${id}; COMMIT;`)
+  }
+
+  return {
+    db,
+    loadDatabase,
+    executeQuery,
+    selectQuery,
+    getSpendsYearMonth,
+    getCategoryAll,
+    createSpend,
+    deleteSpendsMatchId,
+    createCategory,
+    usedCategory,
+    updateCategory,
+    deleteCategory,
+  }
 })

@@ -28,6 +28,8 @@ export type ModalParams = {
   status: boolean
   class: string
   message: string
+  apply_button_message: string | undefined
+  close_button_message: string | undefined
 }
 
 export type SpendCategoryTotal = {
@@ -35,4 +37,21 @@ export type SpendCategoryTotal = {
   price: number
   target_value: number
   difference_value: number
+}
+
+export type MultipleChoiceMenuParams = {
+  id: number
+  value: string
+}
+
+export type CreateCategory = {
+  category: string
+  spend_target_value: number
+}
+
+export type UpdateDeleteCategory = {
+  id: number | null
+  category: string
+  spend_target_value: number
+  initial_flag: boolean
 }
