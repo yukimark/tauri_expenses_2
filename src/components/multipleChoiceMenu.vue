@@ -6,11 +6,13 @@ const props = defineProps<{
   items: MultipleChoiceMenuParams[]
 }>()
 
-const emit = defineEmits(['select-menu'])
+const emit = defineEmits<{
+  (e: 'select-menu', index: number): void
+}>()
 
 const selectMenu = ref<number>(1)
 
-const selectMenuChange = (index: number) => {
+const selectMenuChange = (index: number): void => {
   selectMenu.value = index
   emit('select-menu', index)
 }

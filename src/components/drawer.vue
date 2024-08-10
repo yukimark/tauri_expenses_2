@@ -5,7 +5,7 @@ import CoverBackground from '../parts/coverBackground.vue'
 
 const drawerFlag = ref<boolean>(false)
 
-function toggleDrawerMenu() {
+function toggleDrawerMenu(): void {
   drawerFlag.value = !drawerFlag.value
 }
 </script>

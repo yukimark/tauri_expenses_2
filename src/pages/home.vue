@@ -76,6 +76,7 @@ const getSpendAllSetItem = async () => {
   itemsCommon.value = totalPriceToLocale(itemsCommon.value)
 }
 
+// TODO:返り値の型
 const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   return spendAll.map((spend) => ({
     ...spend,
@@ -85,6 +86,7 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   }))
 }
 
+// TODO:返り値の型
 const totalPriceToLocale = (itemsCommon: Item[]) => {
   return itemsCommon.map((item) => ({
     ...item,

@@ -53,11 +53,12 @@ const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
 
 const getSpendAllYearMonth = ref<number>(1)
 
-const getSpendAllSetItem = async () => {
+const getSpendAllSetItem = async (): Promise<void> => {
   spendAll.value = await databaseStore.getSpendsYearMonth(getSpendAllYearMonth.value > 1 ? lastMonth : thisMonth)
   items.value = priceToLocale(spendAll.value)
 }
 
+// TODO:返り値の型
 const priceToLocale = (spendAll: GetSpend[]) => {
   return spendAll.map((spend) => ({
     ...spend,
@@ -100,7 +101,7 @@ onMounted(async () => {
   }
 })
 
-const submitForm = async () => {
+const submitForm = async (): Promise<void> => {
   const value = formData.value
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
@@ -120,7 +121,7 @@ const submitForm = async () => {
   }
 }
 
-const modalClose = (isOpen: boolean) => {
+const modalClose = (isOpen: boolean): void => {
   modalParams.value = {
     status: isOpen,
     class: '',
@@ -130,7 +131,7 @@ const modalClose = (isOpen: boolean) => {
   }
 }
 
-const deleteItems = async (itemArray: Item[]) => {
+const deleteItems = async (itemArray: Item[]): Promise<void> => {
   if (itemArray.length === 0) {
     setModalParams({ cssClass: 'success', message: '削除するときはアイテムにチェックを入れてください。' })
     return
@@ -141,7 +142,7 @@ const deleteItems = async (itemArray: Item[]) => {
   setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
 }
 
-const spendAllMonthToggle = async (index: number) => {
+const spendAllMonthToggle = async (index: number): Promise<void> => {
   getSpendAllYearMonth.value = index
   getSpendAllSetItem()
 }
