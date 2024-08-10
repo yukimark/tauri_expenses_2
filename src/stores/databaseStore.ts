@@ -16,20 +16,6 @@ export const useDatabaseStore = defineStore('database', () => {
     }
   }
 
-  const executeQuery = async (query: string, params?: any[]) => {
-    if (!db.value) {
-      throw new Error('Database is not connected')
-    }
-    return db.value.execute(query, params)
-  }
-
-  const selectQuery = async (query: string, params?: any[]) => {
-    if (!db.value) {
-      throw new Error('Database is not connected')
-    }
-    return db.value.select(query, params)
-  }
-
   const getSpendsYearMonth = async (yearMonth: string): Promise<GetSpend[]> => {
     if (!db.value) {
       throw new Error('Database is not connected')
@@ -132,8 +118,6 @@ export const useDatabaseStore = defineStore('database', () => {
   return {
     db,
     loadDatabase,
-    executeQuery,
-    selectQuery,
     getSpendsYearMonth,
     getCategoryAll,
     createSpend,
