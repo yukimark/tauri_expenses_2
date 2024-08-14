@@ -5,7 +5,7 @@ import { GetUpdateProfile } from '../types.ts'
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<GetUpdateProfile[]>([])
 
-  const set = async (params: GetUpdateProfile[]) => {
+  const set = async (params: GetUpdateProfile[]): Promise<void> => {
     profile.value = params
   }
 

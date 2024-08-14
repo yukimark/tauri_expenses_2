@@ -32,13 +32,22 @@ const headers = ref<Header[]>([
 const itemsSpend = ref<Item[]>([])
 const itemsCommon = ref<Item[]>([])
 
-const getSpendAllSetItem = async () => {
+const getSpendAllSetItem = async (): Promise<void> => {
+  refValueInit()
+  spendAll.value = await databaseStore.getSpendsYearMonth(selectedMonth.value)
+  spendTotalling()
+  spendSummaryTotalling()
+}
+
+const refValueInit = (): void => {
   spendCategoryTotals.value = []
   spendPriceTotal.value = 0
   spendFixedCostTotal.value = 0
   spendDeferredPayTotal.value = 0
   itemsCommon.value = []
-  spendAll.value = await databaseStore.getSpendsYearMonth(selectedMonth.value)
+}
+
+const spendTotalling = (): void => {
   categoryStore.category.forEach((category) => {
     let categorySum: number = 0
     spendAll.value.forEach((spend) => {
@@ -54,6 +63,9 @@ const getSpendAllSetItem = async () => {
       difference_value: differenceSpendTarget,
     })
   })
+}
+
+const spendSummaryTotalling = (): void => {
   spendAll.value.forEach((spend) => {
     if (spend.fixed_cost === 'false') {
       spendFixedCostTotal.value += spend.price
@@ -76,6 +88,7 @@ const getSpendAllSetItem = async () => {
   itemsCommon.value = totalPriceToLocale(itemsCommon.value)
 }
 
+// TODO:返り値の型
 const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   return spendAll.map((spend) => ({
     ...spend,
@@ -85,6 +98,7 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   }))
 }
 
+// TODO:返り値の型
 const totalPriceToLocale = (itemsCommon: Item[]) => {
   return itemsCommon.map((item) => ({
     ...item,

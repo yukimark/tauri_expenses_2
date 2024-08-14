@@ -7,27 +7,13 @@ import { GetCategory, GetSpend, GetUpdateProfile } from '../types.ts'
 export const useDatabaseStore = defineStore('database', () => {
   const db = ref<Database | null>(null)
 
-  const loadDatabase = async () => {
+  const loadDatabase = async (): Promise<void> => {
     try {
       db.value = await Database.load('sqlite:expenses.db')
       console.log('Database connected')
     } catch (error) {
       console.error('Database connection error', error)
     }
-  }
-
-  const executeQuery = async (query: string, params?: any[]) => {
-    if (!db.value) {
-      throw new Error('Database is not connected')
-    }
-    return db.value.execute(query, params)
-  }
-
-  const selectQuery = async (query: string, params?: any[]) => {
-    if (!db.value) {
-      throw new Error('Database is not connected')
-    }
-    return db.value.select(query, params)
   }
 
   const getSpendsYearMonth = async (yearMonth: string): Promise<GetSpend[]> => {
@@ -48,14 +34,14 @@ export const useDatabaseStore = defineStore('database', () => {
 
   const createSpend = async (
     params: [date: string, category_id: number | null, price: number | null, fixed_cost: boolean, deferred_pay: boolean, memo: string],
-  ) => {
+  ): Promise<void> => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
     db.value.execute('INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);', params)
   }
 
-  const deleteSpendsMatchId = async (params: number[]) => {
+  const deleteSpendsMatchId = async (params: number[]): Promise<void> => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
@@ -70,7 +56,7 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select('SELECT id, category, initial_flag, spend_target_value FROM categories order by id asc;')
   }
 
-  const createCategory = async (params: [category: string, spend_target_value: number]) => {
+  const createCategory = async (params: [category: string, spend_target_value: number]): Promise<void> => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
@@ -85,7 +71,7 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select(`SELECT EXISTS (SELECT 1 FROM spends WHERE category_id == ${id}) AS exists_flag;`)
   }
 
-  const updateCategory = async (params: [category: string, spend_target_value: number, id: number]) => {
+  const updateCategory = async (params: [category: string, spend_target_value: number, id: number]): Promise<void> => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
@@ -99,7 +85,7 @@ export const useDatabaseStore = defineStore('database', () => {
     )
   }
 
-  const deleteCategory = async (id: number) => {
+  const deleteCategory = async (id: number): Promise<void> => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
@@ -113,7 +99,9 @@ export const useDatabaseStore = defineStore('database', () => {
     return db.value.select('SELECT target_value_total_price, target_value_fixed_cost, target_value_deferred_pay FROM profiles WHERE id = 1;')
   }
 
-  const updateProfile = async (params: [target_value_total_price: number, target_value_fixed_cost: number, target_value_deferred_pay: number]) => {
+  const updateProfile = async (
+    params: [target_value_total_price: number, target_value_fixed_cost: number, target_value_deferred_pay: number],
+  ): Promise<void> => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
@@ -130,8 +118,6 @@ export const useDatabaseStore = defineStore('database', () => {
   return {
     db,
     loadDatabase,
-    executeQuery,
-    selectQuery,
     getSpendsYearMonth,
     getCategoryAll,
     createSpend,

@@ -5,13 +5,15 @@ import CoverBackground from '../parts/coverBackground.vue'
 
 const props = defineProps<ModalParams>()
 
-const emit = defineEmits(['modal-status'])
+const emit = defineEmits<{
+  (e: 'modal-status', isOpen: boolean): void
+}>()
 
-function closeModal() {
+function closeModal(): void {
   emit('modal-status', !props.status)
 }
 
-const computedClass = computed(() => {
+const computedClass = computed((): string => {
   return props.class ? props.class : ''
 })
 

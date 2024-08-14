@@ -67,7 +67,7 @@ const setModalParams = ({
   }
 }
 
-const modalClose = (isOpen: boolean) => {
+const modalClose = (isOpen: boolean): void => {
   modalParams.value = {
     status: isOpen,
     class: '',
@@ -77,7 +77,7 @@ const modalClose = (isOpen: boolean) => {
   }
 }
 
-const categoryMenuToggle = async (index: number) => {
+const categoryMenuToggle = async (index: number): Promise<void> => {
   categoryMenuChoice.value = index
   formDataCreateCategory.value = {
     category: '',
@@ -96,7 +96,7 @@ const categoryMenuToggle = async (index: number) => {
   }
 }
 
-const submitFormCreateCategory = async () => {
+const submitFormCreateCategory = async (): Promise<void> => {
   const value = formDataCreateCategory.value
   try {
     await databaseStore.createCategory([value.category, value.spend_target_value])
@@ -112,7 +112,7 @@ const submitFormCreateCategory = async () => {
   }
 }
 
-const submitFormUpdateCategory = async () => {
+const submitFormUpdateCategory = async (): Promise<void> => {
   const value = formDataUpdateDeleteCategory.value
   try {
     await databaseStore.updateCategory([value.category, value.spend_target_value, value.id!])
@@ -130,7 +130,7 @@ const submitFormUpdateCategory = async () => {
   }
 }
 
-const submitFormDeleteCategory = async () => {
+const submitFormDeleteCategory = async (): Promise<void> => {
   const value = formDataUpdateDeleteCategory.value
   try {
     await databaseStore.deleteCategory(value.id!)
@@ -148,7 +148,7 @@ const submitFormDeleteCategory = async () => {
   }
 }
 
-const submitFormUpdateProfile = async () => {
+const submitFormUpdateProfile = async (): Promise<void> => {
   const value = updateProfile.value
   try {
     await databaseStore.updateProfile([value.target_value_total_price, value.target_value_fixed_cost, value.target_value_deferred_pay])
@@ -165,7 +165,7 @@ const submitFormUpdateProfile = async () => {
   }
 }
 
-const formDisplaySetParams = async () => {
+const formDisplaySetParams = async (): Promise<void> => {
   const result = categoryStore.category.find((item) => item.id === formDataUpdateDeleteCategory.value.id)!
   const data = await databaseStore.usedCategory(result.id)
   usedCategory.value = data[0].exists_flag === 1
