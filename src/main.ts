@@ -9,7 +9,7 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import Vue3EasyDataTable from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
-import './assets/vue3-easy-data-table.css'
+import './assets/css/vue3-easy-data-table.css'
 
 const pinia = createPinia()
 
