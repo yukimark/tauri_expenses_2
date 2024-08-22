@@ -7,5 +7,6 @@ CREATE TABLE spends (
   deferred_pay INTEGER NOT NULL,
   memo         TEXT,
   created_at   TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at   TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  updated_at   TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES categories(id)
 )
