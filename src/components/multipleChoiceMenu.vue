@@ -36,7 +36,7 @@ const selectMenuChange = (index: number): void => {
 
 .multiple-choice-menu button {
   text-decoration: underline;
-  color: rgb(106, 106, 196);
+  color: rgb(106 106 196);
 }
 
 .multiple-choice-menu button:hover {

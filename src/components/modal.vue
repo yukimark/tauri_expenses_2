@@ -74,10 +74,10 @@ button:hover {
 }
 
 .success {
-  background-color: rgb(50, 50, 204);
+  background-color: rgb(50 50 204);
 }
 
 .error {
-  background-color: rgb(216, 58, 58);
+  background-color: rgb(216 58 58);
 }
 </style>

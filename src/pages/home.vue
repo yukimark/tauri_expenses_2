@@ -183,7 +183,7 @@ onMounted(async () => {
 
 button {
   background-color: lightgray;
-  padding: 0px 5px 0px;
+  padding: 0 5px;
 }
 
 button:hover {
@@ -193,7 +193,7 @@ button:hover {
 .contents {
   display: flex;
   margin-top: 30px;
-  padding: 0px 20px 0px;
+  padding: 0 20px;
 }
 
 .pie-chart-box {

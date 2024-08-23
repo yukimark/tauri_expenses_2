@@ -227,16 +227,16 @@ const spendAllMonthToggle = async (index: number): Promise<void> => {
 
 .table-contents {
   display: flex;
-  margin: 0px 20px 0px;
+  margin: 0 20px;
   justify-content: space-between;
 }
 
 .spend-trash {
   text-align: right;
-  margin: 0px 20px;
+  margin: 0 20px;
 }
 
 .table {
-  margin: 10px 20px 0px;
+  margin: 10px 20px 0;
 }
 </style>

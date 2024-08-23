@@ -263,10 +263,10 @@ button {
 }
 
 .select-menu {
-  margin: 0px 30px 0px;
+  margin: 0 30px;
 }
 
 .read-only {
-  background-color: rgb(223, 222, 222);
+  background-color: rgb(223 222 222);
 }
 </style>

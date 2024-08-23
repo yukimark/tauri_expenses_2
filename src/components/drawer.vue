@@ -50,7 +50,7 @@ function toggleDrawerMenu(): void {
 
 .drawer-menu {
   width: 250px;
-  border: solid 1px rgb(161, 161, 161);
+  border: solid 1px rgb(161 161 161);
   border-top: none;
   border-bottom: none;
   border-left: none;
@@ -72,13 +72,13 @@ function toggleDrawerMenu(): void {
 .drawer-menu div a {
   font-size: 22px;
   font-weight: bold;
-  color: rgb(48, 48, 48);
+  color: rgb(48 48 48);
   width: inherit;
   height: inherit;
   display: block;
 }
 
 .drawer-menu div a:hover {
-  color: rgb(241, 11, 11);
+  color: rgb(241 11 11);
 }
 </style>
