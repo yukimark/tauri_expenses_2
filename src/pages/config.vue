@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue'
-import { MultipleChoiceMenuParams, CreateCategory, ModalParams, UpdateDeleteCategory, GetUpdateProfile } from '../types'
-import { ref } from 'vue'
-import { useDatabaseStore } from '../stores/databaseStore'
-import { useCategoryStore } from '../stores/categoryStore'
-import { useProfileStore } from '../stores/profileStore'
-import Modal from '../components/modal.vue'
+import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue';
+import { MultipleChoiceMenuParams, CreateCategory, ModalParams, UpdateDeleteCategory, GetUpdateProfile } from '../types';
+import { ref } from 'vue';
+import { useDatabaseStore } from '../stores/databaseStore';
+import { useCategoryStore } from '../stores/categoryStore';
+import { useProfileStore } from '../stores/profileStore';
+import Modal from '../components/modal.vue';
 
-const databaseStore = useDatabaseStore()
-const categoryStore = useCategoryStore()
-const profileStore = useProfileStore()
+const databaseStore = useDatabaseStore();
+const categoryStore = useCategoryStore();
+const profileStore = useProfileStore();
 
 const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
   { id: 1, value: '項目の追加' },
   { id: 2, value: '項目の編集･削除' },
   { id: 3, value: '集計目標値の設定' },
-]
+];
 
-const categoryMenuChoice = ref<number>(1)
+const categoryMenuChoice = ref<number>(1);
 
 const formDataCreateCategory = ref<CreateCategory>({
   category: '',
   spend_target_value: 0,
-})
+});
 
 const formDataUpdateDeleteCategory = ref<UpdateDeleteCategory>({
   id: null,
   category: '',
   spend_target_value: 0,
   initial_flag: true,
-})
+});
 
 const modalParams = ref<ModalParams>({
   status: false,
@@ -37,15 +37,15 @@ const modalParams = ref<ModalParams>({
   message: '',
   apply_button_message: undefined,
   close_button_message: undefined,
-})
+});
 
-const usedCategory = ref<boolean>(true)
+const usedCategory = ref<boolean>(true);
 
 const updateProfile = ref<GetUpdateProfile>({
   target_value_total_price: profileStore.profile[0].target_value_total_price,
   target_value_fixed_cost: profileStore.profile[0].target_value_fixed_cost,
   target_value_deferred_pay: profileStore.profile[0].target_value_deferred_pay,
-})
+});
 
 const setModalParams = ({
   cssClass,
@@ -53,10 +53,10 @@ const setModalParams = ({
   apply_button_message,
   close_button_message,
 }: {
-  cssClass: string
-  message: string
-  apply_button_message?: string
-  close_button_message?: string
+  cssClass: string;
+  message: string;
+  apply_button_message?: string;
+  close_button_message?: string;
 }) => {
   modalParams.value = {
     status: true,
@@ -64,8 +64,8 @@ const setModalParams = ({
     message: message,
     apply_button_message: apply_button_message,
     close_button_message: close_button_message,
-  }
-}
+  };
+};
 
 const modalClose = (isOpen: boolean): void => {
   modalParams.value = {
@@ -74,108 +74,108 @@ const modalClose = (isOpen: boolean): void => {
     message: '',
     apply_button_message: undefined,
     close_button_message: undefined,
-  }
-}
+  };
+};
 
 const categoryMenuToggle = async (index: number): Promise<void> => {
-  categoryMenuChoice.value = index
+  categoryMenuChoice.value = index;
   formDataCreateCategory.value = {
     category: '',
     spend_target_value: 0,
-  }
+  };
   formDataUpdateDeleteCategory.value = {
     id: null,
     category: '',
     spend_target_value: 0,
     initial_flag: true,
-  }
+  };
   updateProfile.value = {
     target_value_total_price: profileStore.profile[0].target_value_total_price,
     target_value_fixed_cost: profileStore.profile[0].target_value_fixed_cost,
     target_value_deferred_pay: profileStore.profile[0].target_value_deferred_pay,
-  }
-}
+  };
+};
 
 const submitFormCreateCategory = async (): Promise<void> => {
-  const value = formDataCreateCategory.value
+  const value = formDataCreateCategory.value;
   try {
-    await databaseStore.createCategory([value.category, value.spend_target_value])
-    await categoryStore.set(await databaseStore.getCategoryAll())
-    setModalParams({ cssClass: 'success', message: '項目の登録に成功しました。' })
+    await databaseStore.createCategory([value.category, value.spend_target_value]);
+    await categoryStore.set(await databaseStore.getCategoryAll());
+    setModalParams({ cssClass: 'success', message: '項目の登録に成功しました。' });
   } catch (error) {
-    console.error(error)
-    setModalParams({ cssClass: 'error', message: '項目の登録に失敗しました。' })
+    console.error(error);
+    setModalParams({ cssClass: 'error', message: '項目の登録に失敗しました。' });
   }
   formDataCreateCategory.value = {
     category: '',
     spend_target_value: 0,
-  }
-}
+  };
+};
 
 const submitFormUpdateCategory = async (): Promise<void> => {
-  const value = formDataUpdateDeleteCategory.value
+  const value = formDataUpdateDeleteCategory.value;
   try {
-    await databaseStore.updateCategory([value.category, value.spend_target_value, value.id!])
-    await categoryStore.set(await databaseStore.getCategoryAll())
-    setModalParams({ cssClass: 'success', message: '項目の更新に成功しました。' })
+    await databaseStore.updateCategory([value.category, value.spend_target_value, value.id!]);
+    await categoryStore.set(await databaseStore.getCategoryAll());
+    setModalParams({ cssClass: 'success', message: '項目の更新に成功しました。' });
   } catch (error) {
-    console.error(error)
-    setModalParams({ cssClass: 'error', message: '項目の更新に失敗しました。' })
+    console.error(error);
+    setModalParams({ cssClass: 'error', message: '項目の更新に失敗しました。' });
   }
   formDataUpdateDeleteCategory.value = {
     id: null,
     category: '',
     spend_target_value: 0,
     initial_flag: true,
-  }
-}
+  };
+};
 
 const submitFormDeleteCategory = async (): Promise<void> => {
-  const value = formDataUpdateDeleteCategory.value
+  const value = formDataUpdateDeleteCategory.value;
   try {
-    await databaseStore.deleteCategory(value.id!)
-    await categoryStore.set(await databaseStore.getCategoryAll())
-    setModalParams({ cssClass: 'success', message: '項目の削除に成功しました。' })
+    await databaseStore.deleteCategory(value.id!);
+    await categoryStore.set(await databaseStore.getCategoryAll());
+    setModalParams({ cssClass: 'success', message: '項目の削除に成功しました。' });
   } catch (error) {
-    console.error(error)
-    setModalParams({ cssClass: 'error', message: '項目の削除に失敗しました。' })
+    console.error(error);
+    setModalParams({ cssClass: 'error', message: '項目の削除に失敗しました。' });
   }
   formDataUpdateDeleteCategory.value = {
     id: null,
     category: '',
     spend_target_value: 0,
     initial_flag: true,
-  }
-}
+  };
+};
 
 const submitFormUpdateProfile = async (): Promise<void> => {
-  const value = updateProfile.value
+  const value = updateProfile.value;
   try {
-    await databaseStore.updateProfile([value.target_value_total_price, value.target_value_fixed_cost, value.target_value_deferred_pay])
-    await profileStore.set(await databaseStore.getProfile())
-    setModalParams({ cssClass: 'success', message: '集計目標値の更新に成功しました。' })
+    await databaseStore.updateProfile([value.target_value_total_price, value.target_value_fixed_cost, value.target_value_deferred_pay]);
+    await profileStore.set(await databaseStore.getProfile());
+    setModalParams({ cssClass: 'success', message: '集計目標値の更新に成功しました。' });
   } catch (error) {
-    console.error(error)
-    setModalParams({ cssClass: 'error', message: '集計目標値の更新に失敗しました。' })
+    console.error(error);
+    setModalParams({ cssClass: 'error', message: '集計目標値の更新に失敗しました。' });
   }
   updateProfile.value = {
     target_value_total_price: profileStore.profile[0].target_value_total_price,
     target_value_fixed_cost: profileStore.profile[0].target_value_fixed_cost,
     target_value_deferred_pay: profileStore.profile[0].target_value_deferred_pay,
-  }
-}
+  };
+};
 
 const formDisplaySetParams = async (): Promise<void> => {
-  const result = categoryStore.category.find((item) => item.id === formDataUpdateDeleteCategory.value.id)!
-  const data = await databaseStore.usedCategory(result.id)
-  usedCategory.value = data[0].exists_flag === 1
+  const result = categoryStore.category.find((item) => item.id === formDataUpdateDeleteCategory.value.id)!;
+  const data = await databaseStore.usedCategory(result.id);
+  usedCategory.value = data[0].exists_flag === 1;
   formDataUpdateDeleteCategory.value = {
     id: result.id,
     category: result.category,
     spend_target_value: result.spend_target_value,
     initial_flag: result.initial_flag,
-  }
-}
+  };
+};
 </script>
 
 <template>
