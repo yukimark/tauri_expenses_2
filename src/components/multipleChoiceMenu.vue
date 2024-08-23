@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { MultipleChoiceMenuParams } from '../types';
+import { ref } from 'vue'
+import { MultipleChoiceMenuParams } from '../types'
 
 const props = defineProps<{
-  items: MultipleChoiceMenuParams[];
-}>();
+  items: MultipleChoiceMenuParams[]
+}>()
 
 const emit = defineEmits<{
-  (e: 'select-menu', index: number): void;
-}>();
+  (e: 'select-menu', index: number): void
+}>()
 
-const selectMenu = ref<number>(1);
+const selectMenu = ref<number>(1)
 
 const selectMenuChange = (index: number): void => {
-  selectMenu.value = index;
-  emit('select-menu', index);
-};
+  selectMenu.value = index
+  emit('select-menu', index)
+}
 </script>
 
 <template>

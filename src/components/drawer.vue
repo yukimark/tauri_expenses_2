@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import CoverBackground from '../parts/coverBackground.vue';
+import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import CoverBackground from '../parts/coverBackground.vue'
 
-const drawerFlag = ref<boolean>(false);
+const drawerFlag = ref<boolean>(false)
 
 function toggleDrawerMenu(): void {
-  drawerFlag.value = !drawerFlag.value;
+  drawerFlag.value = !drawerFlag.value
 }
 </script>
 

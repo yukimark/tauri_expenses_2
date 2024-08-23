@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useDatabaseStore } from '../stores/databaseStore';
-import { useCategoryStore } from '../stores/categoryStore.ts';
-import { CreateSpend, ModalParams, GetSpend, MultipleChoiceMenuParams } from '../types.ts';
-import Modal from '../components/modal.vue';
-import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue';
-import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table';
-import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts';
+import { ref, onMounted } from 'vue'
+import { useDatabaseStore } from '../stores/databaseStore'
+import { useCategoryStore } from '../stores/categoryStore.ts'
+import { CreateSpend, ModalParams, GetSpend, MultipleChoiceMenuParams } from '../types.ts'
+import Modal from '../components/modal.vue'
+import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue'
+import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
+import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
 
-const databaseStore = useDatabaseStore();
-const categoryStore = useCategoryStore();
+const databaseStore = useDatabaseStore()
+const categoryStore = useCategoryStore()
 
-const today: Date = new Date();
-const yearMonthDay: string = formatDateToYYYYMMDD(today);
-const thisMonth: string = formatDateToYYYYMM(today);
-const lastMonth: string = formatDateToYYYYMMLastMonth(today);
+const today: Date = new Date()
+const yearMonthDay: string = formatDateToYYYYMMDD(today)
+const thisMonth: string = formatDateToYYYYMM(today)
+const lastMonth: string = formatDateToYYYYMMLastMonth(today)
 
-const spendAll = ref<GetSpend[]>([]);
+const spendAll = ref<GetSpend[]>([])
 
 const headers = ref<Header[]>([
   { text: '日付', value: 'date', width: 110 },
@@ -25,9 +25,9 @@ const headers = ref<Header[]>([
   { text: '固定費', value: 'fixed_cost', width: 90 },
   { text: '後払い', value: 'deferred_pay', width: 90 },
   { text: 'メモ', value: 'memo', width: 350 },
-]);
-const items = ref<Item[]>([]);
-const itemsSelected = ref<Item[]>([]);
+])
+const items = ref<Item[]>([])
+const itemsSelected = ref<Item[]>([])
 
 const formData = ref<CreateSpend>({
   date: yearMonthDay,
@@ -36,7 +36,7 @@ const formData = ref<CreateSpend>({
   fixed_cost: false,
   deferred_pay: true,
   memo: '',
-});
+})
 
 const modalParams = ref<ModalParams>({
   status: false,
@@ -44,33 +44,33 @@ const modalParams = ref<ModalParams>({
   message: '',
   apply_button_message: undefined,
   close_button_message: undefined,
-});
+})
 
 const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
   { id: 1, value: '今月' },
   { id: 2, value: '先月' },
-];
+]
 
-const getSpendAllYearMonth = ref<number>(1);
+const getSpendAllYearMonth = ref<number>(1)
 
 const getSpendAllSetItem = async (): Promise<void> => {
-  spendAll.value = await databaseStore.getSpendsYearMonth(getSpendAllYearMonth.value > 1 ? lastMonth : thisMonth);
-  items.value = priceToLocale(spendAll.value);
-};
+  spendAll.value = await databaseStore.getSpendsYearMonth(getSpendAllYearMonth.value > 1 ? lastMonth : thisMonth)
+  items.value = priceToLocale(spendAll.value)
+}
 
 // TODO:返り値の型
 const priceToLocale = (spendAll: GetSpend[]) => {
   return spendAll.map((spend) => ({
     ...spend,
     price: spend.price.toLocaleString(),
-  }));
-};
+  }))
+}
 
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
-  if (column === 'price') return 'direction-right';
-  if (column === 'fixed_cost' || column === 'deferred_pay') return 'direction-center';
-  return '';
-};
+  if (column === 'price') return 'direction-right'
+  if (column === 'fixed_cost' || column === 'deferred_pay') return 'direction-center'
+  return ''
+}
 
 const setModalParams = ({
   cssClass,
@@ -78,10 +78,10 @@ const setModalParams = ({
   apply_button_message,
   close_button_message,
 }: {
-  cssClass: string;
-  message: string;
-  apply_button_message?: string;
-  close_button_message?: string;
+  cssClass: string
+  message: string
+  apply_button_message?: string
+  close_button_message?: string
 }) => {
   modalParams.value = {
     status: true,
@@ -89,27 +89,27 @@ const setModalParams = ({
     message: message,
     apply_button_message: apply_button_message,
     close_button_message: close_button_message,
-  };
-};
+  }
+}
 
 onMounted(async () => {
   try {
-    getSpendAllSetItem();
-    console.log('spend success');
+    getSpendAllSetItem()
+    console.log('spend success')
   } catch (error) {
-    console.error('Query error', error);
+    console.error('Query error', error)
   }
-});
+})
 
 const submitForm = async (): Promise<void> => {
-  const value = formData.value;
+  const value = formData.value
   try {
-    await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo]);
-    await getSpendAllSetItem();
-    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' });
+    await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
+    await getSpendAllSetItem()
+    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' })
   } catch (error) {
-    console.error(error);
-    setModalParams({ cssClass: 'error', message: 'お小遣い帳の保存に失敗しました。' });
+    console.error(error)
+    setModalParams({ cssClass: 'error', message: 'お小遣い帳の保存に失敗しました。' })
   }
   formData.value = {
     date: yearMonthDay,
@@ -118,8 +118,8 @@ const submitForm = async (): Promise<void> => {
     fixed_cost: false,
     deferred_pay: true,
     memo: '',
-  };
-};
+  }
+}
 
 const modalClose = (isOpen: boolean): void => {
   modalParams.value = {
@@ -128,24 +128,24 @@ const modalClose = (isOpen: boolean): void => {
     message: '',
     apply_button_message: undefined,
     close_button_message: undefined,
-  };
-};
+  }
+}
 
 const deleteItems = async (itemArray: Item[]): Promise<void> => {
   if (itemArray.length === 0) {
-    setModalParams({ cssClass: 'success', message: '削除するときはアイテムにチェックを入れてください。' });
-    return;
+    setModalParams({ cssClass: 'success', message: '削除するときはアイテムにチェックを入れてください。' })
+    return
   }
-  const ids: number[] = itemArray.map((item) => item.id);
-  await databaseStore.deleteSpendsMatchId(ids);
-  getSpendAllSetItem();
-  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' });
-};
+  const ids: number[] = itemArray.map((item) => item.id)
+  await databaseStore.deleteSpendsMatchId(ids)
+  getSpendAllSetItem()
+  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
+}
 
 const spendAllMonthToggle = async (index: number): Promise<void> => {
-  getSpendAllYearMonth.value = index;
-  getSpendAllSetItem();
-};
+  getSpendAllYearMonth.value = index
+  getSpendAllSetItem()
+}
 </script>
 
 <template>
