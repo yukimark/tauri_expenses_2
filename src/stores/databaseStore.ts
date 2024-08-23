@@ -27,7 +27,7 @@ export const useDatabaseStore = defineStore('database', () => {
         FROM spends
         LEFT JOIN categories ON spends.category_id = categories.id
         WHERE spends.date LIKE ?
-        order by spends.created_at desc;
+        ORDER BY spends.created_at DESC;
       `,
       [`${yearMonth}%`],
     )
@@ -39,7 +39,7 @@ export const useDatabaseStore = defineStore('database', () => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
-    db.value.execute('INSERT into spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);', params)
+    db.value.execute('INSERT INTO spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);', params)
   }
 
   const deleteSpendsMatchId = async (params: number[]): Promise<void> => {
@@ -54,7 +54,7 @@ export const useDatabaseStore = defineStore('database', () => {
     if (!db.value) {
       throw new Error('Database is not connected')
     }
-    return db.value.select('SELECT id, category, initial_flag, spend_target_value FROM categories order by id asc;')
+    return db.value.select('SELECT id, category, initial_flag, spend_target_value FROM categories ORDER BY id ASC;')
   }
 
   const createCategory = async (params: [category: string, spend_target_value: number]): Promise<void> => {
@@ -62,7 +62,7 @@ export const useDatabaseStore = defineStore('database', () => {
       throw new Error('Database is not connected')
     }
     params.push(0)
-    db.value.execute('INSERT into categories (category, spend_target_value, initial_flag) VALUES ($1, $2, $3);', params)
+    db.value.execute('INSERT INTO categories (category, spend_target_value, initial_flag) VALUES ($1, $2, $3);', params)
   }
 
   const usedCategory = async (id: number): Promise<[{ exists_flag: number }]> => {
