@@ -77,7 +77,7 @@ const modalClose = (isOpen: boolean): void => {
   };
 };
 
-const categoryMenuToggle = async (index: number): Promise<void> => {
+const categoryMenuToggle = (index: number): void => {
   categoryMenuChoice.value = index;
   formDataCreateCategory.value = {
     category: '',
