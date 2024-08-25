@@ -35,8 +35,6 @@ const modalParams = ref<ModalParams>({
   status: false,
   class: '',
   message: '',
-  apply_button_message: undefined,
-  close_button_message: undefined,
 });
 
 const usedCategory = ref<boolean>(true);
@@ -47,23 +45,11 @@ const updateProfile = ref<GetUpdateProfile>({
   target_value_deferred_pay: profileStore.profile[0].target_value_deferred_pay,
 });
 
-const setModalParams = ({
-  cssClass,
-  message,
-  apply_button_message,
-  close_button_message,
-}: {
-  cssClass: string;
-  message: string;
-  apply_button_message?: string;
-  close_button_message?: string;
-}) => {
+const setModalParams = ({ cssClass, message }: { cssClass: string; message: string }) => {
   modalParams.value = {
     status: true,
     class: cssClass,
     message: message,
-    apply_button_message: apply_button_message,
-    close_button_message: close_button_message,
   };
 };
 
@@ -72,8 +58,6 @@ const modalClose = (isOpen: boolean): void => {
     status: isOpen,
     class: '',
     message: '',
-    apply_button_message: undefined,
-    close_button_message: undefined,
   };
 };
 

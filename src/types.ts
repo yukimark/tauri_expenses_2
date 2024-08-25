@@ -28,8 +28,8 @@ export type ModalParams = {
   status: boolean;
   class: string;
   message: string;
-  apply_button_message: string | undefined;
-  close_button_message: string | undefined;
+  apply_button_message?: string;
+  close_button_message?: string;
 };
 
 export type SpendCategoryTotal = {

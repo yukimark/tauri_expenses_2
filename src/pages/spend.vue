@@ -42,8 +42,6 @@ const modalParams = ref<ModalParams>({
   status: false,
   class: '',
   message: '',
-  apply_button_message: undefined,
-  close_button_message: undefined,
 });
 
 const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
@@ -72,23 +70,11 @@ const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): s
   return '';
 };
 
-const setModalParams = ({
-  cssClass,
-  message,
-  apply_button_message,
-  close_button_message,
-}: {
-  cssClass: string;
-  message: string;
-  apply_button_message?: string;
-  close_button_message?: string;
-}) => {
+const setModalParams = ({ cssClass, message }: { cssClass: string; message: string }) => {
   modalParams.value = {
     status: true,
     class: cssClass,
     message: message,
-    apply_button_message: apply_button_message,
-    close_button_message: close_button_message,
   };
 };
 
@@ -126,8 +112,6 @@ const modalClose = (isOpen: boolean): void => {
     status: isOpen,
     class: '',
     message: '',
-    apply_button_message: undefined,
-    close_button_message: undefined,
   };
 };
 
