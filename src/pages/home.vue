@@ -177,8 +177,7 @@ onMounted(async () => {
 
 .custom-date-picker {
   width: 150px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0 10px;
 }
 
 button {

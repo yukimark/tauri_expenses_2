@@ -49,10 +49,8 @@ function toggleDrawerMenu(): void {
 
 .drawer-menu {
   width: 250px;
-  border: solid 1px rgb(161 161 161);
-  border-top: none;
-  border-bottom: none;
-  border-left: none;
+  border: none;
+  border-right: solid 1px rgb(161 161 161);
   background-color: white;
   height: 100vh;
   position: fixed;
