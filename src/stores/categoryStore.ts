@@ -1,13 +1,13 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import { GetCategory } from '../types.ts'
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { GetCategory } from '../types.ts';
 
 export const useCategoryStore = defineStore('category', () => {
-  const category = ref<GetCategory[]>([])
+  const category = ref<GetCategory[]>([]);
 
   const set = async (params: GetCategory[]): Promise<void> => {
-    category.value = params
-  }
+    category.value = params;
+  };
 
-  return { category, set }
-})
+  return { category, set };
+});
