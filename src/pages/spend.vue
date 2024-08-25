@@ -94,7 +94,7 @@ const setModalParams = ({
 
 onMounted(async () => {
   try {
-    getSpendAllSetItem();
+    await getSpendAllSetItem();
     console.log('spend success');
   } catch (error) {
     console.error('Query error', error);
@@ -138,7 +138,7 @@ const deleteItems = async (itemArray: Item[]): Promise<void> => {
   }
   const ids: number[] = itemArray.map((item) => item.id);
   await databaseStore.deleteSpendsMatchId(ids);
-  getSpendAllSetItem();
+  await getSpendAllSetItem();
   setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' });
 };
 

@@ -120,7 +120,7 @@ const bodyRowClassNameFunction: BodyRowClassNameFunction = (item: Item): string 
 
 onMounted(async () => {
   try {
-    getSpendAllSetItem();
+    await getSpendAllSetItem();
     console.log(spendCategoryTotals);
   } catch (error) {
     console.error('Query error', error);
