@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps<{
-  hideDrawer?: boolean
-}>()
+const props = defineProps({
+  hideDrawer: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const computedClass = computed(() => {
   return {
