@@ -55,7 +55,7 @@ const spendTotalling = (): void => {
         categorySum += spend.price;
       }
     });
-    let differenceSpendTarget: number = category.spend_target_value - categorySum;
+    const differenceSpendTarget: number = category.spend_target_value - categorySum;
     spendCategoryTotals.value.push({
       name: category.category,
       price: categorySum,
@@ -82,7 +82,7 @@ const spendSummaryTotalling = (): void => {
     { name: '後払い', price: spendDeferredPayTotal.value, target_value: profileStore.profile[0].target_value_deferred_pay },
   ];
   itemsCommon.value.forEach((itemCommon) => {
-    let differenceValue: number = itemCommon.target_value - itemCommon.price;
+    const differenceValue: number = itemCommon.target_value - itemCommon.price;
     itemCommon['difference_value'] = differenceValue;
   });
   itemsCommon.value = totalPriceToLocale(itemsCommon.value);
