@@ -82,8 +82,7 @@ const spendSummaryTotalling = (): void => {
     { name: '後払い', price: spendDeferredPayTotal.value, target_value: profileStore.profile[0].target_value_deferred_pay },
   ];
   itemsCommon.value.forEach((itemCommon) => {
-    const differenceValue: number = itemCommon.target_value - itemCommon.price;
-    itemCommon['difference_value'] = differenceValue;
+    itemCommon['difference_value'] = itemCommon.target_value - itemCommon.price;
   });
   itemsCommon.value = totalPriceToLocale(itemsCommon.value);
 };
