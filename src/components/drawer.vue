@@ -11,7 +11,7 @@ function toggleDrawerMenu(): void {
 </script>
 
 <template>
-  <div class="drawer-open-button">
+  <div class="drawer-toggle-button">
     <button @click="toggleDrawerMenu">
       <i class="fa-solid fa-bars fa-2xl"></i>
     </button>
@@ -31,7 +31,7 @@ function toggleDrawerMenu(): void {
 </template>
 
 <style scoped>
-.drawer-open-button {
+.drawer-toggle-button {
   width: 45px;
   height: 45px;
   line-height: 45px;
