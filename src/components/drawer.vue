@@ -42,8 +42,7 @@ function toggleDrawerMenu(): void {
   pointer-events: auto;
 }
 
-.drawer-open-button:hover,
-.drawer-close-button:hover {
+.drawer-toggle-button:hover {
   background-color: #c9c9c9;
   border-radius: 50%;
 }
