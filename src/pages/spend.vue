@@ -168,7 +168,7 @@ const spendAllMonthToggle = async (index: number): Promise<void> => {
           :max-date="new Date()"
         />
       </div>
-      <div class="input-category-id form-contents">
+      <div class="form-contents">
         <label for="input-category">項目</label>
         <select id="input-category" v-model="formData.category_id" required>
           <option v-for="category in categoryStore.category" :value="category.id" :key="category.id">
@@ -176,7 +176,7 @@ const spendAllMonthToggle = async (index: number): Promise<void> => {
           </option>
         </select>
       </div>
-      <div class="input-price form-contents">
+      <div class="form-contents">
         <label for="input-price">金額</label>
         <input type="number" id="input-price" v-model="formData.price" required />
       </div>

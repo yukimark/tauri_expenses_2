@@ -17,7 +17,7 @@ function toggleDrawerMenu(): void {
     </button>
   </div>
   <div v-if="drawerFlag" class="drawer-menu">
-    <div class="drawer-menu-first" @click="toggleDrawerMenu">
+    <div @click="toggleDrawerMenu">
       <RouterLink to="/">ホーム</RouterLink>
     </div>
     <div @click="toggleDrawerMenu">
