@@ -11,13 +11,13 @@ const databaseStore = useDatabaseStore();
 const categoryStore = useCategoryStore();
 const profileStore = useProfileStore();
 
-const today: Date = new Date();
-const thisMonth: string = formatDateToYYYYMM(today);
+const today = new Date();
+const thisMonth = formatDateToYYYYMM(today);
 
 const spendAll = ref<GetSpend[]>([]);
 const spendCategoryTotals = ref<SpendCategoryTotal[]>([]);
 
-const selectedMonth = ref<string>(thisMonth);
+const selectedMonth = ref(thisMonth);
 
 const spendPriceTotal = ref<number>(0);
 const spendFixedCostTotal = ref<number>(0);
@@ -49,7 +49,7 @@ const refValueInit = (): void => {
 
 const spendTotalling = (): void => {
   categoryStore.category.forEach((category) => {
-    let categorySum: number = 0;
+    let categorySum = 0;
     spendAll.value.forEach((spend) => {
       if (category.category === spend.category) {
         categorySum += spend.price;

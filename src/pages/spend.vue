@@ -11,10 +11,10 @@ import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth }
 const databaseStore = useDatabaseStore();
 const categoryStore = useCategoryStore();
 
-const today: Date = new Date();
-const yearMonthDay: string = formatDateToYYYYMMDD(today);
-const thisMonth: string = formatDateToYYYYMM(today);
-const lastMonth: string = formatDateToYYYYMMLastMonth(today);
+const today = new Date();
+const yearMonthDay = formatDateToYYYYMMDD(today);
+const thisMonth = formatDateToYYYYMM(today);
+const lastMonth = formatDateToYYYYMMLastMonth(today);
 
 const spendAll = ref<GetSpend[]>([]);
 
