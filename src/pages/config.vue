@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue';
+import MultipleChoiceMenu from '../shared/components/multipleChoiceMenu.vue';
 import { MultipleChoiceMenuParams, CreateCategory, ModalParams, UpdateDeleteCategory, GetUpdateProfile } from '../types';
 import { ref } from 'vue';
 import { useDatabaseStore } from '../stores/databaseStore';
 import { useCategoryStore } from '../stores/categoryStore';
 import { useProfileStore } from '../stores/profileStore';
-import Modal from '../components/modal.vue';
+import Modal from '../shared/components/modal.vue';
 
 const databaseStore = useDatabaseStore();
 const categoryStore = useCategoryStore();

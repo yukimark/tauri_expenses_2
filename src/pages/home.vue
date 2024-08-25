@@ -2,7 +2,7 @@
 import { useDatabaseStore } from '../stores/databaseStore';
 import { useCategoryStore } from '../stores/categoryStore';
 import { useProfileStore } from '../stores/profileStore';
-import { formatDateToYYYYMM } from '../helper/formatDate';
+import { formatDateToYYYYMM } from '../shared/functions/formatDate';
 import { GetSpend, SpendCategoryTotal } from '../types';
 import { onMounted, ref } from 'vue';
 import type { Header, Item, BodyItemClassNameFunction, BodyRowClassNameFunction } from 'vue3-easy-data-table';

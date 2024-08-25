@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import CoverBackground from '../parts/coverBackground.vue';
+import CoverBackground from './coverBackground.vue';
 
 const drawerFlag = ref<boolean>(false);
 

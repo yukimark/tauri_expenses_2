@@ -3,10 +3,10 @@ import { ref, onMounted } from 'vue';
 import { useDatabaseStore } from '../stores/databaseStore';
 import { useCategoryStore } from '../stores/categoryStore.ts';
 import { CreateSpend, ModalParams, GetSpend, MultipleChoiceMenuParams } from '../types.ts';
-import Modal from '../components/modal.vue';
-import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue';
+import Modal from '../shared/components/modal.vue';
+import MultipleChoiceMenu from '../shared/components/multipleChoiceMenu.vue';
 import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table';
-import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts';
+import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../shared/functions/formatDate.ts';
 
 const databaseStore = useDatabaseStore();
 const categoryStore = useCategoryStore();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { MultipleChoiceMenuParams } from '../types';
+import { MultipleChoiceMenuParams } from '../../types';
 
 const props = defineProps<{
   items: MultipleChoiceMenuParams[];

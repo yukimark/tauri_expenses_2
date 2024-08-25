@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import 'normalize.css';
 import { ref, onMounted } from 'vue';
-import Drawer from './components/drawer.vue';
+import Drawer from './shared/components/drawer.vue';
 import { useDatabaseStore } from './stores/databaseStore';
 import { useCategoryStore } from './stores/categoryStore';
 import { useProfileStore } from './stores/profileStore';
