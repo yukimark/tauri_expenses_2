@@ -19,8 +19,18 @@ export type GetSpend = {
   date: string;
   category: string;
   price: number;
-  fixed_cost: string;
-  deferred_pay: string;
+  fixed_cost: boolean;
+  deferred_pay: boolean;
+  memo: string;
+};
+
+export type GetSpendQuery = {
+  id: number;
+  date: string;
+  category: string;
+  price: number;
+  fixed_cost: number;
+  deferred_pay: number;
   memo: string;
 };
 

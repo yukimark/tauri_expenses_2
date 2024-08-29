@@ -2,7 +2,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import Database from '@tauri-apps/plugin-sql';
-import { GetCategory, GetSpend, GetUpdateProfile } from '../types.ts';
+import { GetCategory, GetSpend, GetUpdateProfile, GetSpendQuery } from '../types.ts';
+import { convertBooleanToNumber, convertSpendsIntegerToBoolean } from '../shared/functions/convertQuery.ts';
 
 export const useDatabaseStore = defineStore('database', () => {
   const db = ref<Database | null>(null);
@@ -20,7 +21,7 @@ export const useDatabaseStore = defineStore('database', () => {
     if (!db.value) {
       throw new Error('Database is not connected');
     }
-    return db.value.select(
+    const getSpendQuery: GetSpendQuery[] = await db.value.select(
       `
         SELECT spends.id, spends.date, categories.category, spends.price, spends.fixed_cost, spends.deferred_pay, spends.memo
         FROM spends
@@ -30,6 +31,7 @@ export const useDatabaseStore = defineStore('database', () => {
       `,
       [`${yearMonth}%`],
     );
+    return convertSpendsIntegerToBoolean(getSpendQuery);
   };
 
   const createSpend = async (
@@ -38,7 +40,8 @@ export const useDatabaseStore = defineStore('database', () => {
     if (!db.value) {
       throw new Error('Database is not connected');
     }
-    db.value.execute('INSERT INTO spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);', params);
+    const convert_params = convertBooleanToNumber(params);
+    db.value.execute('INSERT INTO spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);', convert_params);
   };
 
   const deleteSpendsMatchId = async (params: number[]): Promise<void> => {
