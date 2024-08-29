@@ -81,7 +81,6 @@ const setModalParams = ({ cssClass, message }: { cssClass: string; message: stri
 onMounted(async () => {
   try {
     await getSpendAllSetItem();
-    console.log('spend success');
   } catch (error) {
     console.error('Query error', error);
   }

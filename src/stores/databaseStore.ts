@@ -11,7 +11,6 @@ export const useDatabaseStore = defineStore('database', () => {
     try {
       db.value = await Database.load('sqlite:expenses.db');
       await db.value.execute('PRAGMA foreign_keys = true;');
-      console.log('Database connected');
     } catch (error) {
       console.error('Database connection error', error);
     }
