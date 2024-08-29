@@ -41,7 +41,10 @@ export const useDatabaseStore = defineStore('database', () => {
       throw new Error('Database is not connected');
     }
     const convert_params = convertBooleanToNumber(params);
-    db.value.execute('INSERT INTO spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);', convert_params);
+    db.value.execute(
+      'INSERT INTO spends (date, category_id, price, fixed_cost, deferred_pay, memo) VALUES ($1, $2, $3, $4, $5, $6);',
+      convert_params,
+    );
   };
 
   const deleteSpendsMatchId = async (params: number[]): Promise<void> => {

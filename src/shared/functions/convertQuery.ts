@@ -1,7 +1,7 @@
-import { GetSpend, GetSpendQuery } from "../../types";
+import { GetSpend, GetSpendQuery } from '../../types';
 
 export function convertBooleanToNumber(arr: any[]): any[] {
-  return arr.map(item => {
+  return arr.map((item) => {
     if (typeof item === 'boolean') {
       return item ? 1 : 0;
     }
