@@ -67,10 +67,10 @@ const spendTotalling = (): void => {
 
 const spendSummaryTotalling = (): void => {
   spendAll.value.forEach((spend) => {
-    if (spend.fixed_cost === 'false') {
+    if (!spend.fixed_cost) {
       spendFixedCostTotal.value += spend.price;
     }
-    if (spend.deferred_pay === 'true') {
+    if (spend.deferred_pay) {
       spendDeferredPayTotal.value += spend.price;
     }
     spendPriceTotal.value += spend.price;
