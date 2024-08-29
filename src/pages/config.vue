@@ -163,7 +163,7 @@ const formDisplaySetParams = async (): Promise<void> => {
 </script>
 
 <template>
-  <div class="title"><h1>設定</h1></div>
+  <h1 class="title">設定</h1>
   <div><h2>項目の追加･編集･削除</h2></div>
   <div class="select-menu">
     <MultipleChoiceMenu :items="multipleChoiceMenuParams" @select-menu="categoryMenuToggle" />

@@ -128,7 +128,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="title"><h1>ホーム</h1></div>
+  <h1 class="title">ホーム</h1>
   <div class="select-month input-date">
     <p>年月</p>
     <VueDatePicker

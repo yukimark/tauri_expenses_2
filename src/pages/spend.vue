@@ -133,7 +133,7 @@ const spendAllMonthToggle = async (index: number): Promise<void> => {
 </script>
 
 <template>
-  <div class="title"><h1>お小遣い帳</h1></div>
+  <h1 class="title">お小遣い帳</h1>
   <form @submit.prevent="submitForm">
     <div class="form-row">
       <div class="input-date form-contents">
