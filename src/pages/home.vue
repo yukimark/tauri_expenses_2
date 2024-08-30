@@ -48,20 +48,14 @@ const refValueInit = (): void => {
 };
 
 const spendTotalling = (): void => {
-  categoryStore.category.forEach((category) => {
-    let categorySum = 0;
-    spendAll.value.forEach((spend) => {
-      if (category.category === spend.category) {
-        categorySum += spend.price;
-      }
-    });
-    const differenceSpendTarget: number = category.spend_target_value - categorySum;
-    spendCategoryTotals.value.push({
+  spendCategoryTotals.value = categoryStore.category.map((category) => {
+    const categorySum = spendAll.value.reduce((acc, curr) => (category.category === curr.category ? acc + curr.price : acc), 0);
+    return {
       name: category.category,
       price: categorySum,
       target_value: category.spend_target_value,
-      difference_value: differenceSpendTarget,
-    });
+      difference_value: category.spend_target_value - categorySum,
+    };
   });
 };
 
