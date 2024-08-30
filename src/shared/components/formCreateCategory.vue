@@ -18,7 +18,6 @@ const formDataCreateCategory = ref<CreateCategory>({
 
 const sendModalParams = (cssClass: string, message: string): void => {
   emit('modal-params', { cssClass, message });
-  console.log(cssClass);
 };
 
 const submitFormCreateCategory = async (): Promise<void> => {
