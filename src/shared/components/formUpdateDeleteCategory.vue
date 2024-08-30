@@ -105,3 +105,9 @@ const submitFormDeleteCategory = async (): Promise<void> => {
     </div>
   </form>
 </template>
+
+<style scoped>
+.read-only {
+  background-color: rgb(223 222 222);
+}
+</style>
