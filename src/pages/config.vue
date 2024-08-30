@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import MultipleChoiceMenu from '../shared/components/multipleChoiceMenu.vue';
-import { MultipleChoiceMenuParams, CreateCategory, ModalParams, UpdateDeleteCategory, GetUpdateProfile } from '../types';
+import { MultipleChoiceMenuParams, ModalParams, UpdateDeleteCategory, GetUpdateProfile } from '../types';
 import { ref } from 'vue';
 import { useDatabaseStore } from '../stores/databaseStore';
 import { useCategoryStore } from '../stores/categoryStore';
 import { useProfileStore } from '../stores/profileStore';
 import Modal from '../shared/components/modal.vue';
+import FormCreateCategory from '../shared/components/formCreateCategory.vue';
 
 const databaseStore = useDatabaseStore();
 const categoryStore = useCategoryStore();
@@ -18,11 +19,6 @@ const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
 ];
 
 const categoryMenuChoice = ref<number>(1);
-
-const formDataCreateCategory = ref<CreateCategory>({
-  category: '',
-  spend_target_value: 0,
-});
 
 const formDataUpdateDeleteCategory = ref<UpdateDeleteCategory>({
   id: null,
@@ -61,12 +57,12 @@ const modalClose = (isOpen: boolean): void => {
   };
 };
 
+const callSetModalParams = ({ cssClass, message }: { cssClass: string; message: string }): void => {
+  setModalParams({ cssClass: cssClass, message: message });
+};
+
 const categoryMenuToggle = (index: number): void => {
   categoryMenuChoice.value = index;
-  formDataCreateCategory.value = {
-    category: '',
-    spend_target_value: 0,
-  };
   formDataUpdateDeleteCategory.value = {
     id: null,
     category: '',
@@ -77,22 +73,6 @@ const categoryMenuToggle = (index: number): void => {
     target_value_total_price: profileStore.profile[0].target_value_total_price,
     target_value_fixed_cost: profileStore.profile[0].target_value_fixed_cost,
     target_value_deferred_pay: profileStore.profile[0].target_value_deferred_pay,
-  };
-};
-
-const submitFormCreateCategory = async (): Promise<void> => {
-  const value = formDataCreateCategory.value;
-  try {
-    await databaseStore.createCategory([value.category, value.spend_target_value]);
-    await categoryStore.set(await databaseStore.getCategoryAll());
-    setModalParams({ cssClass: 'success', message: '項目の登録に成功しました。' });
-  } catch (error) {
-    console.error(error);
-    setModalParams({ cssClass: 'error', message: '項目の登録に失敗しました。' });
-  }
-  formDataCreateCategory.value = {
-    category: '',
-    spend_target_value: 0,
   };
 };
 
@@ -169,19 +149,7 @@ const formDisplaySetParams = async (): Promise<void> => {
     <MultipleChoiceMenu :items="multipleChoiceMenuParams" @select-menu="categoryMenuToggle" />
   </div>
   <div v-if="categoryMenuChoice === 1">
-    <form @submit.prevent="submitFormCreateCategory">
-      <div class="form-row mb-20">
-        <div class="form-contents">
-          <label for="input-category">項目</label>
-          <input type="text" id="input-category" v-model="formDataCreateCategory.category" required />
-        </div>
-        <div class="form-contents">
-          <label for="input-spend-target-value">目標値</label>
-          <input type="number" id="input-spend-target-value" v-model="formDataCreateCategory.spend_target_value" required />
-        </div>
-        <button>save</button>
-      </div>
-    </form>
+    <FormCreateCategory @modal-params="callSetModalParams" />
   </div>
   <div v-if="categoryMenuChoice === 2">
     <form>
