@@ -57,6 +57,10 @@ const getSpendAllSetItem = async (): Promise<void> => {
 };
 
 // TODO:返り値の型
+/**
+ * テーブルに出力するため数値を3桁区切りの文字列にする。
+ * @param spendAll 指定したspendを取得した配列
+ */
 const priceToLocale = (spendAll: GetSpend[]) => {
   return spendAll.map((spend) => ({
     ...spend,
@@ -64,6 +68,10 @@ const priceToLocale = (spendAll: GetSpend[]) => {
   }));
 };
 
+/**
+ * 表の指定項目を右寄せもしくは中央揃えにする。
+ * @param column 表の項目名
+ */
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
   if (column === 'price') return 'direction-right';
   if (column === 'fixed_cost' || column === 'deferred_pay') return 'direction-center';

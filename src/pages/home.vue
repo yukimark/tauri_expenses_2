@@ -47,6 +47,9 @@ const refValueInit = (): void => {
   itemsCommon.value = [];
 };
 
+/**
+ * spendのcategoryごとの合計を集計する
+ */
 const spendTotalling = (): void => {
   spendCategoryTotals.value = categoryStore.category.map((category) => {
     const categorySum = spendAll.value.reduce((acc, curr) => (category.category === curr.category ? acc + curr.price : acc), 0);
@@ -59,6 +62,9 @@ const spendTotalling = (): void => {
   });
 };
 
+/**
+ * spend全体の集計
+ */
 const spendSummaryTotalling = (): void => {
   spendAll.value.forEach((spend) => {
     if (!spend.fixed_cost) {
@@ -82,6 +88,10 @@ const spendSummaryTotalling = (): void => {
 };
 
 // TODO:返り値の型
+/**
+ * テーブルに出力するため数値を3桁区切りの文字列にする。
+ * @param spendAll spendのcategoryごとの合計をまとめた配列
+ */
 const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   return spendAll.map((spend) => ({
     ...spend,
@@ -92,6 +102,10 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
 };
 
 // TODO:返り値の型
+/**
+ * テーブルに出力するため数値を3桁区切りの文字列にする。
+ * @param itemsCommon spend全体の集計をまとめた配列
+ */
 const totalPriceToLocale = (itemsCommon: Item[]) => {
   return itemsCommon.map((item) => ({
     ...item,
@@ -101,11 +115,19 @@ const totalPriceToLocale = (itemsCommon: Item[]) => {
   }));
 };
 
+/**
+ * 表で数値が入っている項目は要素を右寄せにする。
+ * @param column 表の項目名
+ */
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
   if (column === 'price' || column === 'target_value' || column === 'difference_value') return 'direction-right';
   return '';
 };
 
+/**
+ * 表で目標値よりも金額のほうが高いときに背景を赤くする。
+ * @param item 表の行
+ */
 const bodyRowClassNameFunction: BodyRowClassNameFunction = (item: Item): string => {
   if (parseFloat(item.difference_value.replace(/,/g, '')) < 0) return 'back-red';
   return '';

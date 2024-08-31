@@ -1,3 +1,7 @@
+/**
+ * string型の年月日を返します。
+ * @param date 年月日と時刻
+ */
 export function formatDateToYYYYMMDD(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -6,6 +10,10 @@ export function formatDateToYYYYMMDD(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
+/**
+ * string型の年月を返します。
+ * @param date 年月日と時刻
+ */
 export function formatDateToYYYYMM(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -13,6 +21,10 @@ export function formatDateToYYYYMM(date: Date): string {
   return `${year}-${month}`;
 }
 
+/**
+ * string型の年月(1ヶ月前)を返します。
+ * @param date 年月日と時刻
+ */
 export function formatDateToYYYYMMLastMonth(date: Date): string {
   let year = date.getFullYear();
   let month = date.getMonth();
