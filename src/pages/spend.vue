@@ -86,7 +86,7 @@ onMounted(async () => {
   }
 });
 
-const submitForm = async (): Promise<void> => {
+const submitFormCreateSpend = async (): Promise<void> => {
   const value = formData.value;
   try {
     await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo]);
@@ -133,7 +133,7 @@ const spendAllMonthToggle = async (index: number): Promise<void> => {
 
 <template>
   <h1 class="title">お小遣い帳</h1>
-  <form @submit.prevent="submitForm">
+  <form @submit.prevent="submitFormCreateSpend">
     <div class="form-row">
       <div class="input-date form-contents">
         <p>日付</p>
