@@ -30,7 +30,7 @@ const headers = ref<Header[]>([
   { text: '目標', value: 'target_value', width: 130 },
   { text: '目標との差', value: 'difference_value', width: 150 },
 ]);
-/** お小遣い帳のカテゴリごとの合計を入れる */
+/** お小遣い帳の項目ごとの合計を入れる */
 const itemsSpend = ref<Item[]>([]);
 /** お小遣い帳の概要の集計したものを入れる */
 const itemsCommon = ref<Item[]>([]);
@@ -126,7 +126,7 @@ const totalPriceToLocale = (itemsCommon: Item[]) => {
  * @return 数値が入っている項目には要素を右寄せにするcssを設定する
  */
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
-  if (column === 'price' || column === 'target_value' || column === 'difference_value') return 'direction-right';
+  if (['price', 'target_value', 'difference_value'].includes(column)) return 'direction-right';
   return '';
 };
 

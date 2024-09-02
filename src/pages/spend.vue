@@ -79,7 +79,7 @@ const priceToLocale = (spendAll: GetSpend[]) => {
  */
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
   if (column === 'price') return 'direction-right';
-  if (column === 'fixed_cost' || column === 'deferred_pay') return 'direction-center';
+  if (['fixed_cost', 'deferred_pay'].includes(column)) return 'direction-center';
   return '';
 };
 
