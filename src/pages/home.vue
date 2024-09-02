@@ -94,6 +94,7 @@ const spendSummaryTotalling = (): void => {
 /**
  * テーブルに出力するため数値を3桁区切りの文字列にする。
  * @param spendAll お小遣い帳の項目ごとの合計をまとめた配列
+ * @return お小遣い帳の項目で数値が入るところを3桁区切りの文字列に変換した配列
  */
 const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   return spendAll.map((spend) => ({
@@ -108,6 +109,7 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
 /**
  * テーブルに出力するため数値を3桁区切りの文字列にする。
  * @param itemsCommon お小遣い帳全体の集計をまとめた配列
+ * @return お小遣い帳全体の項目で数値が入るところを3桁区切りの文字列に変換した配列
  */
 const totalPriceToLocale = (itemsCommon: Item[]) => {
   return itemsCommon.map((item) => ({
@@ -121,6 +123,7 @@ const totalPriceToLocale = (itemsCommon: Item[]) => {
 /**
  * 表で数値が入っている項目は要素を右寄せにする。
  * @param column 表の項目名
+ * @return 数値が入っている項目には要素を右寄せにするcssを設定する
  */
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
   if (column === 'price' || column === 'target_value' || column === 'difference_value') return 'direction-right';
@@ -130,6 +133,7 @@ const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): s
 /**
  * 表で目標値よりも金額のほうが高いときに背景を赤くする。
  * @param item 表の行
+ * @return 目標値よりも金額のほうが高いときに背景色を赤くするcssを設定する
  */
 const bodyRowClassNameFunction: BodyRowClassNameFunction = (item: Item): string => {
   if (parseFloat(item.difference_value.replace(/,/g, '')) < 0) return 'back-red';

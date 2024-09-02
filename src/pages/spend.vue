@@ -63,6 +63,7 @@ const getSpendAllSetItem = async (): Promise<void> => {
 /**
  * テーブルに出力するため数値を3桁区切りの文字列にする。
  * @param spendAll 指定したお小遣い帳を取得した配列
+ * @return お小遣い帳の金額を3桁区切りの文字列に変換した配列
  */
 const priceToLocale = (spendAll: GetSpend[]) => {
   return spendAll.map((spend) => ({
@@ -74,6 +75,7 @@ const priceToLocale = (spendAll: GetSpend[]) => {
 /**
  * 表の指定項目を右寄せもしくは中央揃えにする。
  * @param column 表の項目名
+ * @return 指定項目を右寄せもしくは中央揃えにするcssを返す
  */
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
   if (column === 'price') return 'direction-right';
