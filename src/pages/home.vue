@@ -60,6 +60,7 @@ const spendTotalling = (): void => {
       difference_value: category.spend_target_value - categorySum,
     };
   });
+  itemsSpend.value = priceToLocale(spendCategoryTotals.value);
 };
 
 /**
@@ -75,7 +76,6 @@ const spendSummaryTotalling = (): void => {
     }
     spendPriceTotal.value += spend.price;
   });
-  itemsSpend.value = priceToLocale(spendCategoryTotals.value);
   itemsCommon.value = [
     { name: '合計', price: spendPriceTotal.value, target_value: profileStore.profile[0].target_value_total_price },
     { name: '変動費', price: spendFixedCostTotal.value, target_value: profileStore.profile[0].target_value_fixed_cost },
