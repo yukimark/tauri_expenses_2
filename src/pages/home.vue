@@ -51,7 +51,7 @@ const refValueInit = (): void => {
 };
 
 /**
- * spendのcategoryごとの合計を集計する
+ * お小遣い帳の項目ごとの合計を集計する
  */
 const spendTotalling = (): void => {
   spendCategoryTotals.value = categoryStore.category.map((category) => {
@@ -67,7 +67,7 @@ const spendTotalling = (): void => {
 };
 
 /**
- * spend全体の集計
+ * お小遣い帳全体の集計
  */
 const spendSummaryTotalling = (): void => {
   spendAll.value.forEach((spend) => {
@@ -93,7 +93,7 @@ const spendSummaryTotalling = (): void => {
 // TODO:返り値の型
 /**
  * テーブルに出力するため数値を3桁区切りの文字列にする。
- * @param spendAll spendのcategoryごとの合計をまとめた配列
+ * @param spendAll お小遣い帳の項目ごとの合計をまとめた配列
  */
 const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
   return spendAll.map((spend) => ({
@@ -107,7 +107,7 @@ const priceToLocale = (spendAll: SpendCategoryTotal[]) => {
 // TODO:返り値の型
 /**
  * テーブルに出力するため数値を3桁区切りの文字列にする。
- * @param itemsCommon spend全体の集計をまとめた配列
+ * @param itemsCommon お小遣い帳全体の集計をまとめた配列
  */
 const totalPriceToLocale = (itemsCommon: Item[]) => {
   return itemsCommon.map((item) => ({

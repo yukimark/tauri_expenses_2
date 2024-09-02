@@ -24,7 +24,7 @@ const sendModalParams = (cssClass: string, message: string): void => {
   emit('modal-params', { cssClass, message });
 };
 
-/** 選択したcategoryに合わせてformを表示する */
+/** 選択したメニューに合わせてformを表示する */
 const formDisplaySetParams = async (): Promise<void> => {
   const result = categoryStore.category.find((item) => item.id === formDataUpdateDeleteCategory.value.id)!;
   const data = await databaseStore.usedCategory(result.id);

@@ -14,8 +14,8 @@ export function convertBooleanToNumber(arr: any[]): any[] {
 }
 
 /**
- * spendの中でboolean型にしたいものを変換して返します。
- * @param spends spend取得した配列
+ * 取得したお小遣い帳の中でboolean型にしたいものを変換して返します。
+ * @param spends お小遣い帳取得した配列
  */
 export function convertSpendsIntegerToBoolean(spends: GetSpendQuery[]): GetSpend[] {
   return spends.map((spend) => ({

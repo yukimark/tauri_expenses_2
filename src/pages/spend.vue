@@ -62,7 +62,7 @@ const getSpendAllSetItem = async (): Promise<void> => {
 // TODO:返り値の型
 /**
  * テーブルに出力するため数値を3桁区切りの文字列にする。
- * @param spendAll 指定したspendを取得した配列
+ * @param spendAll 指定したお小遣い帳を取得した配列
  */
 const priceToLocale = (spendAll: GetSpend[]) => {
   return spendAll.map((spend) => ({
