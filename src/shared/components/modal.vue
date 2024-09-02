@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ModalParams } from '../types.ts'
-import { computed, ref } from 'vue'
-import CoverBackground from '../parts/coverBackground.vue'
+import { ModalParams } from '../../types.ts';
+import { computed, ref } from 'vue';
+import CoverBackground from './coverBackground.vue';
 
-const props = defineProps<ModalParams>()
+const props = defineProps<ModalParams>();
 
 const emit = defineEmits<{
-  (e: 'modal-status', isOpen: boolean): void
-}>()
+  (e: 'modal-status', isOpen: boolean): void;
+}>();
 
 function closeModal(): void {
-  emit('modal-status', !props.status)
+  emit('modal-status', !props.status);
 }
 
 const computedClass = computed((): string => {
-  return props.class ? props.class : ''
-})
+  return props.class ? props.class : '';
+});
 
-const hideDrawer = ref<boolean>(true)
+const hideDrawer = ref<boolean>(true);
 </script>
 
 <template>
@@ -74,10 +74,10 @@ button:hover {
 }
 
 .success {
-  background-color: rgb(50, 50, 204);
+  background-color: rgb(50 50 204);
 }
 
 .error {
-  background-color: rgb(216, 58, 58);
+  background-color: rgb(216 58 58);
 }
 </style>

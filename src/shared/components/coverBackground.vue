@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
-const props = defineProps<{
-  hideDrawer?: boolean
-}>()
+const props = defineProps({
+  hideDrawer: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const computedClass = computed(() => {
   return {
     'hide-drawer': props.hideDrawer,
-  }
-})
+  };
+});
 </script>
 
 <template>
@@ -18,13 +21,10 @@ const computedClass = computed(() => {
 
 <style scoped>
 div {
-  background-color: rgb(85, 85, 85, 0.7);
+  background-color: rgb(85 85 85 / 70%);
   z-index: 5;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
 }
