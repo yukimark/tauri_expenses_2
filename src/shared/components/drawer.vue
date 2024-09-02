@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import CoverBackground from '../parts/coverBackground.vue'
+import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
+import CoverBackground from './coverBackground.vue';
 
-const drawerFlag = ref<boolean>(false)
+const drawerFlag = ref<boolean>(false);
 
-function toggleDrawerMenu() {
-  drawerFlag.value = !drawerFlag.value
+function toggleDrawerMenu(): void {
+  drawerFlag.value = !drawerFlag.value;
 }
 </script>
 
 <template>
-  <div class="drawer-open-button">
+  <div class="drawer-toggle-button">
     <button @click="toggleDrawerMenu">
       <i class="fa-solid fa-bars fa-2xl"></i>
     </button>
   </div>
   <div v-if="drawerFlag" class="drawer-menu">
-    <div class="drawer-menu-first" @click="toggleDrawerMenu">
+    <div @click="toggleDrawerMenu">
       <RouterLink to="/">ホーム</RouterLink>
     </div>
     <div @click="toggleDrawerMenu">
@@ -31,7 +31,7 @@ function toggleDrawerMenu() {
 </template>
 
 <style scoped>
-.drawer-open-button {
+.drawer-toggle-button {
   width: 45px;
   height: 45px;
   line-height: 45px;
@@ -42,18 +42,15 @@ function toggleDrawerMenu() {
   pointer-events: auto;
 }
 
-.drawer-open-button:hover,
-.drawer-close-button:hover {
+.drawer-toggle-button:hover {
   background-color: #c9c9c9;
   border-radius: 50%;
 }
 
 .drawer-menu {
   width: 250px;
-  border: solid 1px rgb(161, 161, 161);
-  border-top: none;
-  border-bottom: none;
-  border-left: none;
+  border: none;
+  border-right: solid 1px rgb(161 161 161);
   background-color: white;
   height: 100vh;
   position: fixed;
@@ -72,13 +69,13 @@ function toggleDrawerMenu() {
 .drawer-menu div a {
   font-size: 22px;
   font-weight: bold;
-  color: rgb(48, 48, 48);
+  color: rgb(48 48 48);
   width: inherit;
   height: inherit;
   display: block;
 }
 
 .drawer-menu div a:hover {
-  color: rgb(241, 11, 11);
+  color: rgb(241 11 11);
 }
 </style>

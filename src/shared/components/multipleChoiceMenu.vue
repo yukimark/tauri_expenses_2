@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { MultipleChoiceMenuParams } from '../types'
+import { ref } from 'vue';
+import { MultipleChoiceMenuParams } from '../../types';
 
 const props = defineProps<{
-  items: MultipleChoiceMenuParams[]
-}>()
+  items: MultipleChoiceMenuParams[];
+}>();
 
-const emit = defineEmits(['select-menu'])
+const emit = defineEmits<{
+  (e: 'select-menu', index: number): void;
+}>();
 
-const selectMenu = ref<number>(1)
+const selectMenu = ref<number>(1);
 
-const selectMenuChange = (index: number) => {
-  selectMenu.value = index
-  emit('select-menu', index)
-}
+const selectMenuChange = (index: number): void => {
+  selectMenu.value = index;
+  emit('select-menu', index);
+};
 </script>
 
 <template>
@@ -34,7 +36,7 @@ const selectMenuChange = (index: number) => {
 
 .multiple-choice-menu button {
   text-decoration: underline;
-  color: rgb(106, 106, 196);
+  color: rgb(106 106 196);
 }
 
 .multiple-choice-menu button:hover {
@@ -43,7 +45,6 @@ const selectMenuChange = (index: number) => {
 }
 
 .multiple-choice-menu span {
-  margin-left: 8px;
-  margin-right: 8px;
+  margin: 0 8px;
 }
 </style>

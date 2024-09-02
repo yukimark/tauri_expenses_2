@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useDatabaseStore } from '../stores/databaseStore'
-import { useCategoryStore } from '../stores/categoryStore.ts'
-import { CreateSpend, ModalParams, GetSpend, MultipleChoiceMenuParams } from '../types.ts'
-import Modal from '../components/modal.vue'
-import MultipleChoiceMenu from '../components/multipleChoiceMenu.vue'
-import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table'
-import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../helper/formatDate.ts'
+import { ref, onMounted } from 'vue';
+import { useDatabaseStore } from '../stores/databaseStore';
+import { useCategoryStore } from '../stores/categoryStore.ts';
+import { CreateSpend, ModalParams, GetSpend, MultipleChoiceMenuParams } from '../types.ts';
+import Modal from '../shared/components/modal.vue';
+import MultipleChoiceMenu from '../shared/components/multipleChoiceMenu.vue';
+import type { Header, Item, BodyItemClassNameFunction } from 'vue3-easy-data-table';
+import { formatDateToYYYYMMDD, formatDateToYYYYMM, formatDateToYYYYMMLastMonth } from '../shared/functions/formatDate.ts';
 
-const databaseStore = useDatabaseStore()
-const categoryStore = useCategoryStore()
+const databaseStore = useDatabaseStore();
+const categoryStore = useCategoryStore();
 
-const today: Date = new Date()
-const yearMonthDay: string = formatDateToYYYYMMDD(today)
-const thisMonth: string = formatDateToYYYYMM(today)
-const lastMonth: string = formatDateToYYYYMMLastMonth(today)
+const today = new Date();
+const yearMonthDay = formatDateToYYYYMMDD(today);
+const thisMonth = formatDateToYYYYMM(today);
+const lastMonth = formatDateToYYYYMMLastMonth(today);
 
-const spendAll = ref<GetSpend[]>([])
+const spendAll = ref<GetSpend[]>([]);
 
+/** お小遣い帳一覧の表の項目 */
 const headers = ref<Header[]>([
   { text: '日付', value: 'date', width: 110 },
   { text: '項目', value: 'category', width: 130 },
@@ -25,9 +26,11 @@ const headers = ref<Header[]>([
   { text: '固定費', value: 'fixed_cost', width: 90 },
   { text: '後払い', value: 'deferred_pay', width: 90 },
   { text: 'メモ', value: 'memo', width: 350 },
-])
-const items = ref<Item[]>([])
-const itemsSelected = ref<Item[]>([])
+]);
+/** お小遣い帳一覧が入る */
+const items = ref<Item[]>([]);
+/** お小遣い帳削除時に使うチェックボックス選択したものが入る */
+const itemsSelected = ref<Item[]>([]);
 
 const formData = ref<CreateSpend>({
   date: yearMonthDay,
@@ -36,79 +39,75 @@ const formData = ref<CreateSpend>({
   fixed_cost: false,
   deferred_pay: true,
   memo: '',
-})
+});
 
 const modalParams = ref<ModalParams>({
   status: false,
   class: '',
   message: '',
-  apply_button_message: undefined,
-  close_button_message: undefined,
-})
+});
 
 const multipleChoiceMenuParams: MultipleChoiceMenuParams[] = [
   { id: 1, value: '今月' },
   { id: 2, value: '先月' },
-]
+];
 
-const getSpendAllYearMonth = ref<number>(1)
+const getSpendAllYearMonth = ref<number>(1);
 
-const getSpendAllSetItem = async () => {
-  spendAll.value = await databaseStore.getSpendsYearMonth(getSpendAllYearMonth.value > 1 ? lastMonth : thisMonth)
-  items.value = priceToLocale(spendAll.value)
-}
+const getSpendAllSetItem = async (): Promise<void> => {
+  spendAll.value = await databaseStore.getSpendsYearMonth(getSpendAllYearMonth.value > 1 ? lastMonth : thisMonth);
+  items.value = priceToLocale(spendAll.value);
+};
 
+// TODO:返り値の型
+/**
+ * テーブルに出力するため数値を3桁区切りの文字列にする。
+ * @param spendAll 指定したお小遣い帳を取得した配列
+ * @return お小遣い帳の金額を3桁区切りの文字列に変換した配列
+ */
 const priceToLocale = (spendAll: GetSpend[]) => {
   return spendAll.map((spend) => ({
     ...spend,
     price: spend.price.toLocaleString(),
-  }))
-}
+  }));
+};
 
+/**
+ * 表の指定項目を右寄せもしくは中央揃えにする。
+ * @param column 表の項目名
+ * @return 指定項目を右寄せもしくは中央揃えにするcssを返す
+ */
 const bodyItemClassNameFunction: BodyItemClassNameFunction = (column: string): string => {
-  if (column === 'price') return 'direction-right'
-  if (column === 'fixed_cost' || column === 'deferred_pay') return 'direction-center'
-  return ''
-}
+  if (column === 'price') return 'direction-right';
+  if (['fixed_cost', 'deferred_pay'].includes(column)) return 'direction-center';
+  return '';
+};
 
-const setModalParams = ({
-  cssClass,
-  message,
-  apply_button_message,
-  close_button_message,
-}: {
-  cssClass: string
-  message: string
-  apply_button_message?: string
-  close_button_message?: string
-}) => {
+const setModalParams = ({ cssClass, message }: { cssClass: string; message: string }) => {
   modalParams.value = {
     status: true,
     class: cssClass,
     message: message,
-    apply_button_message: apply_button_message,
-    close_button_message: close_button_message,
-  }
-}
+  };
+};
 
 onMounted(async () => {
   try {
-    getSpendAllSetItem()
-    console.log('spend success')
+    await getSpendAllSetItem();
   } catch (error) {
-    console.error('Query error', error)
+    console.error('Query error', error);
   }
-})
+});
 
-const submitForm = async () => {
-  const value = formData.value
+const submitFormCreateSpend = async (): Promise<void> => {
+  const value = formData.value;
   try {
-    await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo])
-    await getSpendAllSetItem()
-    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' })
+    await databaseStore.createSpend([value.date, value.category_id, value.price, value.fixed_cost, value.deferred_pay, value.memo]);
+    await getSpendAllSetItem();
+    setModalParams({ cssClass: 'success', message: 'お小遣い帳の保存に成功しました。' });
   } catch (error) {
-    console.error(error)
-    setModalParams({ cssClass: 'error', message: 'お小遣い帳の保存に失敗しました。' })
+    console.error(error);
+    setModalParams({ cssClass: 'error', message: 'お小遣い帳の保存に失敗しました。' });
   }
   formData.value = {
     date: yearMonthDay,
@@ -117,39 +116,37 @@ const submitForm = async () => {
     fixed_cost: false,
     deferred_pay: true,
     memo: '',
-  }
-}
+  };
+};
 
-const modalClose = (isOpen: boolean) => {
+const modalClose = (isOpen: boolean): void => {
   modalParams.value = {
     status: isOpen,
     class: '',
     message: '',
-    apply_button_message: undefined,
-    close_button_message: undefined,
-  }
-}
+  };
+};
 
-const deleteItems = async (itemArray: Item[]) => {
+const deleteItems = async (itemArray: Item[]): Promise<void> => {
   if (itemArray.length === 0) {
-    setModalParams({ cssClass: 'success', message: '削除するときはアイテムにチェックを入れてください。' })
-    return
+    setModalParams({ cssClass: 'success', message: '削除するときはアイテムにチェックを入れてください。' });
+    return;
   }
-  const ids: number[] = itemArray.map((item) => item.id)
-  await databaseStore.deleteSpendsMatchId(ids)
-  getSpendAllSetItem()
-  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' })
-}
+  const ids: number[] = itemArray.map((item) => item.id);
+  await databaseStore.deleteSpendsMatchId(ids);
+  await getSpendAllSetItem();
+  setModalParams({ cssClass: 'success', message: '選択したデータを削除しました。' });
+};
 
-const spendAllMonthToggle = async (index: number) => {
-  getSpendAllYearMonth.value = index
-  getSpendAllSetItem()
-}
+const spendAllMonthToggle = async (index: number): Promise<void> => {
+  getSpendAllYearMonth.value = index;
+  getSpendAllSetItem();
+};
 </script>
 
 <template>
-  <div class="title"><h1>お小遣い帳</h1></div>
-  <form @submit.prevent="submitForm">
+  <h1 class="title">お小遣い帳</h1>
+  <form @submit.prevent="submitFormCreateSpend">
     <div class="form-row">
       <div class="input-date form-contents">
         <p>日付</p>
@@ -167,7 +164,7 @@ const spendAllMonthToggle = async (index: number) => {
           :max-date="new Date()"
         />
       </div>
-      <div class="input-category-id form-contents">
+      <div class="form-contents">
         <label for="input-category">項目</label>
         <select id="input-category" v-model="formData.category_id" required>
           <option v-for="category in categoryStore.category" :value="category.id" :key="category.id">
@@ -175,7 +172,7 @@ const spendAllMonthToggle = async (index: number) => {
           </option>
         </select>
       </div>
-      <div class="input-price form-contents">
+      <div class="form-contents">
         <label for="input-price">金額</label>
         <input type="number" id="input-price" v-model="formData.price" required />
       </div>
@@ -226,16 +223,16 @@ const spendAllMonthToggle = async (index: number) => {
 
 .table-contents {
   display: flex;
-  margin: 0px 20px 0px;
+  margin: 0 20px;
   justify-content: space-between;
 }
 
 .spend-trash {
   text-align: right;
-  margin: 0px 20px;
+  margin: 0 20px;
 }
 
 .table {
-  margin: 10px 20px 0px;
+  margin: 10px 20px 0;
 }
 </style>
