@@ -18,6 +18,7 @@ const lastMonth = formatDateToYYYYMMLastMonth(today);
 
 const spendAll = ref<GetSpend[]>([]);
 
+/** お小遣い帳一覧の表の項目 */
 const headers = ref<Header[]>([
   { text: '日付', value: 'date', width: 110 },
   { text: '項目', value: 'category', width: 130 },
@@ -26,7 +27,9 @@ const headers = ref<Header[]>([
   { text: '後払い', value: 'deferred_pay', width: 90 },
   { text: 'メモ', value: 'memo', width: 350 },
 ]);
+/** お小遣い帳一覧が入る */
 const items = ref<Item[]>([]);
+/** お小遣い帳削除時に使うチェックボックス選択したものが入る */
 const itemsSelected = ref<Item[]>([]);
 
 const formData = ref<CreateSpend>({

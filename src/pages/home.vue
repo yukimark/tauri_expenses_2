@@ -23,13 +23,16 @@ const spendPriceTotal = ref<number>(0);
 const spendFixedCostTotal = ref<number>(0);
 const spendDeferredPayTotal = ref<number>(0);
 
+/** お小遣い帳集計の表に使う項目 */
 const headers = ref<Header[]>([
   { text: '項目', value: 'name', width: 130 },
   { text: '金額', value: 'price', width: 150 },
   { text: '目標', value: 'target_value', width: 130 },
   { text: '目標との差', value: 'difference_value', width: 150 },
 ]);
+/** お小遣い帳のカテゴリごとの合計を入れる */
 const itemsSpend = ref<Item[]>([]);
+/** お小遣い帳の概要の集計したものを入れる */
 const itemsCommon = ref<Item[]>([]);
 
 const getSpendAllSetItem = async (): Promise<void> => {
